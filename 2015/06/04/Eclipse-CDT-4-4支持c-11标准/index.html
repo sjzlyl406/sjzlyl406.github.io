@@ -3,17 +3,19 @@
 <head>
   <meta charset="utf-8">
   
-  <title>Tag: theme | GentleWolf&#39;s blog</title>
+  <title>Eclipse CDT 4.4支持c++11标准 | GentleWolf&#39;s blog</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description">
-<meta property="og:type" content="website">
-<meta property="og:title" content="GentleWolf's blog">
-<meta property="og:url" content="http://sjzlyl406.github.io/tags/theme/index.html">
+  <meta name="description" content="转到Ubuntu操作系统后，编程环境从Visual Studio转到了Eclipse CDT。今天写一个程序用到了头文件里的asin函数。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Eclipse CDT 4.4支持c++11标准">
+<meta property="og:url" content="http://sjzlyl406.github.io/2015/06/04/Eclipse-CDT-4-4支持c-11标准/index.html">
 <meta property="og:site_name" content="GentleWolf's blog">
-<meta property="og:description">
+<meta property="og:description" content="转到Ubuntu操作系统后，编程环境从Visual Studio转到了Eclipse CDT。今天写一个程序用到了头文件里的asin函数。">
+<meta property="og:image" content="http://7xjenw.com1.z0.glb.clouddn.com/asin函数.png">
+<meta property="og:updated_time" content="2015-06-04T09:37:56.183Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="GentleWolf's blog">
-<meta name="twitter:description">
+<meta name="twitter:title" content="Eclipse CDT 4.4支持c++11标准">
+<meta name="twitter:description" content="转到Ubuntu操作系统后，编程环境从Visual Studio转到了Eclipse CDT。今天写一个程序用到了头文件里的asin函数。">
   
   
     <link rel="icon" href="/favicon.ico">
@@ -160,39 +162,65 @@
   
 </aside>
         
-        <section id="main">
-  
-  
-    
-    
-      
-      
-      <section class="archives-wrap">
-        <div class="archive-year-wrap">
-          <a href="/archives/2015" class="archive-year">2015</a>
-        </div>
-        <div class="archives">
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      <a href="/2015/06/01/modify-the-hexo-theme/" class="archive-article-date">
-  <time datetime="2015-06-01T03:07:34.000Z" itemprop="datePublished">Jun 1</time>
+        <section id="main"><article id="post-Eclipse-CDT-4-4支持c-11标准" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2015/06/04/Eclipse-CDT-4-4支持c-11标准/" class="article-date">
+  <time datetime="2015-06-04T07:04:53.000Z" itemprop="datePublished">2015-06-04</time>
 </a>
-      
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Eclipse/">Eclipse</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
   
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2015/06/01/modify-the-hexo-theme/">modify the hexo theme</a>
+    <h1 class="article-title" itemprop="name">
+      Eclipse CDT 4.4支持c++11标准
     </h1>
   
 
-    </header>
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>转到Ubuntu操作系统后，编程环境从Visual Studio转到了Eclipse CDT。今天写一个程序用到了<complex>头文件里的asin函数。</complex></p>
+<a id="more"></a>
+<p><img src="http://7xjenw.com1.z0.glb.clouddn.com/asin函数.png" alt="图片"></p>
+<p>但是这个函数只有c++11标准支持，然后eclipse就出现了“could not be resolved”情况。网上一般很少有中文的eclipse的错误解决方法，用谷粉搜搜找到一个英文的解决方法，为了防止以后再出现这样的问题，所以记录下来</p>
+<p><a href="http://stackoverflow.com/questions/9131763/eclipse-cdt-c11-c0x-support" target="_blank" rel="external">参考链接1</a><br><a href="http://stackoverflow.com/questions/17457069/enabling-c11-in-eclipse-juno-kepler-luna-cdt" target="_blank" rel="external">参考链接2</a></p>
+<p>由<strong>Carsten Greiner</strong>回答的方法：<br>1新建一个c++工程<br>2默认选项<br>3右键工程选择“Properties”<br>4C/C++ Build -&gt; Settings -&gt;Tool Settings -&gt; GCC C++ Compiler -&gt; Miscellaneous -&gt; Other Flags. 然后在框中输入 -std=c++0x<br>5C/C++ General -&gt; Paths and Symbols -&gt; Symbols -&gt; GNU C++，点击Add 然后粘贴 <strong>GXX_EXPERIMENTAL_CXX0X</strong> 到Name and leave “Value” blank。<br>6点Apply，然后OK。</p>
+<p>由<strong>Trismegistos</strong>回答的方法：<br><strong>第一步，在创建工程之前，配置Eclipse语法分析</strong><br>1Window -&gt; Preferences -&gt; C/C++ -&gt; Build -&gt; Settings -&gt; Discovery -&gt; CDT GCC Build-in Compiler Settings<br>2在Command to get compiler specs文本框输入 -std=c++11<br><strong>开始创建工程，File -&gt; New -&gt; Project -&gt; C/C++ -&gt; C++ Project</strong><br>3右键工程选择:Properties -&gt; C/C++ Build -&gt; Settings -&gt; Tool Settings -&gt; GCC C++ Compiler -&gt; Dialect<br>4在Other dialect flags文本框中输入-std=c++11 或者在Language standard下拉菜单中选择ISO C++11<br><strong>对于CMake工程</strong><br>5创建eclipse工程文件：cmake -G”Eclipse CDT4 - Unix Makefiles” -D CMAKE_BUILD_TYPE=Debug ..<br>6。。。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://sjzlyl406.github.io/2015/06/04/Eclipse-CDT-4-4支持c-11标准/" data-id="ciahzmbg8000f9e3fopwyjni6" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Eclipse/">Eclipse</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/c-11/">c++11</a></li></ul>
+
+    </footer>
   </div>
+  
+    
+<nav id="article-nav">
+  
+  
+    <a href="/2015/06/02/latex尝试/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">latex公式初尝</div>
+    </a>
+  
+</nav>
+
+  
 </article>
-  
-  
-    </div></section>
-  
+
 </section>
       </div>
       <footer id="footer">
