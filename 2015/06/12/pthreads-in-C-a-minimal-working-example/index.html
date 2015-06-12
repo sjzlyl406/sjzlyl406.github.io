@@ -3,17 +3,18 @@
 <head>
   <meta charset="utf-8">
   
-  <title>Category: Algorithm | GentleWolf&#39;s blog</title>
+  <title>pthreads in C - a minimal working example | GentleWolf&#39;s blog</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description">
-<meta property="og:type" content="website">
-<meta property="og:title" content="GentleWolf's blog">
-<meta property="og:url" content="http://sjzlyl406.github.io/categories/Algorithm/index.html">
+  <meta name="description" content="在C语言中线程pthread的用法，翻译自pthreads in C …">
+<meta property="og:type" content="article">
+<meta property="og:title" content="pthreads in C - a minimal working example">
+<meta property="og:url" content="http://sjzlyl406.github.io/2015/06/12/pthreads-in-C-a-minimal-working-example/index.html">
 <meta property="og:site_name" content="GentleWolf's blog">
-<meta property="og:description">
+<meta property="og:description" content="在C语言中线程pthread的用法，翻译自pthreads in C …">
+<meta property="og:updated_time" content="2015-06-12T13:45:06.410Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="GentleWolf's blog">
-<meta name="twitter:description">
+<meta name="twitter:title" content="pthreads in C - a minimal working example">
+<meta name="twitter:description" content="在C语言中线程pthread的用法，翻译自pthreads in C …">
   
   
     <link rel="icon" href="/favicon.ico">
@@ -164,39 +165,76 @@
   
 </aside>
         
-        <section id="main">
-  
-  
-    
-    
-      
-      
-      <section class="archives-wrap">
-        <div class="archive-year-wrap">
-          <a href="/archives/2015" class="archive-year">2015</a>
-        </div>
-        <div class="archives">
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      <a href="/2015/06/10/P-NP-NPC问题/" class="archive-article-date">
-  <time datetime="2015-06-10T02:01:16.000Z" itemprop="datePublished">Jun 10</time>
+        <section id="main"><article id="post-pthreads-in-C-a-minimal-working-example" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2015/06/12/pthreads-in-C-a-minimal-working-example/" class="article-date">
+  <time datetime="2015-06-12T11:11:31.000Z" itemprop="datePublished">2015-06-12</time>
 </a>
-      
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/pthread/">pthread</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
   
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2015/06/10/P-NP-NPC问题/">P/NP/NPC问题</a>
+    <h1 class="article-title" itemprop="name">
+      pthreads in C - a minimal working example
     </h1>
   
 
-    </header>
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>在C语言中线程pthread的用法，翻译自<a href="http://timmurphy.org/2010/05/04/pthreads-in-c-a-minimal-working-example/" target="_blank" rel="external">pthreads in C …</a></p>
+<a id="more"></a>
+<p>pthread是一种简单高效的创建多线程的方法，这篇博文介绍里最基本的功能，分别运行两个独立的任务并在最后合并在一起。</p>
+<p>首先我会用pthread运行基本的线程应用，多线程应用可以同时运行两个及以上的任务。当使用pthread——create创建一个线程时，新旧两个线程共享同样的程序和内存，好像在同时调用两个函数一样。多线程应用会带来很多问题，这点以后讨论。</p>
+<p>在C语言中调用所有关于thread的函数，都应该包含<pthread.h>头文件(ie:#include <pthread.h> ).下面是创建基本线程程序的四步：</pthread.h></pthread.h></p>
+<p><strong>1、定义线程引用变量</strong></p>
+<p>变量类型pthread_t是线程的引用，在线程创建的时候需要定义一个pthread_t类型的变量。例如，pthread_t thread0;就很ok。</p>
+<p><strong>2、创建线程入口</strong></p>
+<p>使用pthread来创建线程时，需要指定线程运行的函数。这个函数必须接受一个 void<em> 变量返回 void</em> 类型。假如，你想输入一个整数作为参数，你需要输入这个整数的地址，并且使用时解引用。听起来很复杂，但是如下所示。非常简单，一个简单的函数声明：void <em>my_entry_function(void </em>param);</p>
+<p><strong>3、创建进程</strong></p>
+<p>一旦pthread_t变量已经定义，入口函数已经创建，我们就能使用pthread_create函数来创建线程。这个函数有四个参数：一个指向phread_t的指针，一个多余的东东（不用担心-直接幅值为NULL）（译者注：线程创建时的属性，NULL代表默认，参见 man pthread_create），一个调用函数的指针以及传入这个函数的参数指针。恩，这个函数有好多指针，但是不要害怕，它看起来不是想象中那么可怕。调用方式差不多是这样的：pthread_create( &amp;thread0, NULL, my_entry_function, &amp;parameter );</p>
+<p><strong>4、处理后事</strong></p>
+<p>当新创建的线程完成它的任务后，需要将整个系统恢复。这需要pthread_join函数来完成，这个函数需要两个参数：pthread_create函数中使用过的pthread_t变量和返回变量用的指针（直接赋值为NULL）。这个调用可以是这种形式：pthread_join(thread0, NULL );</p>
+<p>至此，四步已结束，线程入口函数和其他函数一样，可以创建变量或其他函数能做的任何事儿，也可以使用其他线程创建的变量。</p>
+<p>编译程序时需要添加-lpthread共享库。ie:gcc program.c -o program <strong>-lpthread</strong></p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">#include &#60;pthread.h&#62;&#10;#include &#60;stdio.h&#62;&#10;&#10;/* this function is run by the second thread */&#10;void *inc_x(void *x_void_ptr)&#10;&#123;&#10;&#10;&#9;/* increment x to 100 */&#10;&#9;int *x_ptr = (int *)x_void_ptr;&#10;&#9;while(++(*x_ptr) &#60; 100);&#10;&#10;&#9;printf(&#34;x increment finished\n&#34;);&#10;&#9;&#10;&#9;/* the function must return something - NULL will do */&#10;&#9;return NULL;&#10;&#9;&#10;&#125;&#10;&#10;int main()&#10;&#123;&#10;&#9;&#10;&#9;int x = 0, y = 0;&#10;&#9;&#10;&#9;/* show the initial values of x and y */&#10;&#9;printf(&#34;x: %d, y: %d\n&#34;, x, y);&#10;&#9;&#10;&#9;/* this variable is our reference to the second thread */&#10;&#9;pthread_t inc_x_thread;&#10;&#9;&#10;&#9;/* create a second thread which executes inc_x(&#38;x) */&#10;&#9;if(pthread_create(&#38;inc_x_thread, NULL, inc_x, &#38;x)) &#123;&#10;&#9;&#9;&#10;&#9;&#9;fprintf(stderr, &#34;Error creating thread\n&#34;);&#10;&#9;&#9;return 1;&#10;&#9;&#9;&#10;&#9;&#125;&#10;&#9;/* increment y to 100 in the first thread */&#10;&#9;while(++y &#60; 100);&#10;&#9;&#10;&#9;printf(&#34;y increment finished\n&#34;);&#10;&#9;&#10;&#9;/* wait for the second thread to finish */&#10;&#9;if(pthread_join(inc_x_thread, NULL)) &#123;&#10;&#9;&#9;&#10;&#9;&#9;fprintf(stderr, &#34;Error joining thread\n&#34;);&#10;&#9;&#9;return 2;&#10;&#9;&#9;&#10;&#9;&#125;&#10;&#9;&#10;&#9;/* show the results - x is now 100 thanks to the second thread */&#10;&#9;printf(&#34;x: %d, y: %d\n&#34;, x, y);&#10;&#9;&#10;&#9;return 0;&#10;&#9;&#10;&#125;</span><br></pre></td></tr></table></figure>
+<p>输出结果：</p>
+<p>x: 0, y: 0<br>y increment finished<br>x increment finished<br>x: 100, y: 100</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://sjzlyl406.github.io/2015/06/12/pthreads-in-C-a-minimal-working-example/" data-id="ciatq1hym00032f3fmdsmh7ka" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/pthread/">pthread</a></li></ul>
+
+    </footer>
   </div>
+  
+    
+<nav id="article-nav">
+  
+  
+    <a href="/2015/06/10/P-NP-NPC问题/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">P/NP/NPC问题</div>
+    </a>
+  
+</nav>
+
+  
 </article>
-  
-  
-    </div></section>
-  
+
 </section>
       </div>
       <footer id="footer">
