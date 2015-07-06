@@ -3,17 +3,20 @@
 <head>
   <meta charset="utf-8">
   
-  <title>Tag: Eclipse | GentleWolf&#39;s blog</title>
+  <title>Automake/Autoconf | GentleWolf&#39;s blog</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description">
-<meta property="og:type" content="website">
-<meta property="og:title" content="GentleWolf's blog">
-<meta property="og:url" content="http://sjzlyl406.github.io/tags/Eclipse/index.html">
+  <meta name="description" content="Atuomake/Autoconf的使用。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Automake/Autoconf">
+<meta property="og:url" content="http://sjzlyl406.github.io/2015/07/01/automake-autoconf/index.html">
 <meta property="og:site_name" content="GentleWolf's blog">
-<meta property="og:description">
+<meta property="og:description" content="Atuomake/Autoconf的使用。">
+<meta property="og:image" content="http://7xjenw.com1.z0.glb.clouddn.com/automake1.png">
+<meta property="og:image" content="http://7xjenw.com1.z0.glb.clouddn.com/automake2.png">
+<meta property="og:updated_time" content="2015-07-01T14:56:32.547Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="GentleWolf's blog">
-<meta name="twitter:description">
+<meta name="twitter:title" content="Automake/Autoconf">
+<meta name="twitter:description" content="Atuomake/Autoconf的使用。">
   
   
     <link rel="icon" href="/favicon.ico">
@@ -176,39 +179,92 @@
   
 </aside>
         
-        <section id="main">
-  
-  
-    
-    
-      
-      
-      <section class="archives-wrap">
-        <div class="archive-year-wrap">
-          <a href="/archives/2015" class="archive-year">2015</a>
-        </div>
-        <div class="archives">
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      <a href="/2015/06/04/Eclipse-CDT-4-4支持c-11标准/" class="archive-article-date">
-  <time datetime="2015-06-04T07:04:53.000Z" itemprop="datePublished">Jun 4</time>
+        <section id="main"><article id="post-automake-autoconf" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2015/07/01/automake-autoconf/" class="article-date">
+  <time datetime="2015-07-01T14:10:33.000Z" itemprop="datePublished">2015-07-01</time>
 </a>
-      
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
   
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2015/06/04/Eclipse-CDT-4-4支持c-11标准/">Eclipse CDT 4.4支持c++11标准</a>
+    <h1 class="article-title" itemprop="name">
+      Automake/Autoconf
     </h1>
   
 
-    </header>
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>Atuomake/Autoconf的使用。</p>
+<a id="more"></a>
+<p>-_-!!</p>
+<p><a href="http://www.ibm.com/developerworks/cn/linux/l-makefile/" target="_blank" rel="external"><strong>例解 autoconf 和 automake 生成 Makefile 文件</strong></a></p>
+<p>Automake/Autoconf的步骤很繁琐，但是都是固定套路，最大的变化在configure.ac和Makefile.am的配置，下面一篇博客中很清楚写明了应该怎样配置操作。</p>
+<p>这篇文章写了Makefile的操作步骤：<br>1)    运行autoscan命令<br>2)    将configure.scan 文件重命名为configure.ac(原博客为configure.in，下同)，并修改configure.ac文件<br>3)    在project目录下新建Makefile.am文件，并在core和shell目录下也新建makefile.am文件<br>4)    在project目录下新建NEWS、 README、 ChangeLog 、AUTHORS文件<br>5)    运行autoheader（<strong>代替原博客中的拷贝</strong>）<br>6)    运行aclocal命令<br>7)    运行autoconf命令<br>8)    运行automake -a命令<br>9)    运行./confiugre脚本</p>
+<p><a href="http://blog.csdn.net/yunhua_lee/article/details/6172617" target="_blank" rel="external"><strong>大型项目使用Automake/Autoconf完成编译配置(2)</strong></a></p>
+<p>详细说明了怎么修改configure.ac文件。包括：1、在这个文件中添加<code>AM_INIT_AUTOMAKE()</code>。2、如果需要在文件中添加<code>AC_CONFIG_HEADERS([config.h])</code>宏。3、添加编译链接需要的程序<code>AC_PROG_CXX</code>、<code>AC_PROG_CC</code>、<code>AC_PROG_RANLIB</code>或者<code>LT_INIT</code>(使用libtool编译时，将<code>AC_PROG_RANLIB</code>删除)。4、添加Autoconf输出的文件，常见的是Makefile文件<code>AC_CONFIG_FILES([Makefile])</code>。<br>同时还详细说明了怎么修改Makefile.am文件。</p>
+<p><strong>编写Makefile.am主要是完成3件事情：编译(make)、安装(make install)、打包(make dist)。</strong><br><strong>编译和安装的规则是绑定在一起的，通过同一条语句同时指定了编译和安装的处理方式，具体的格式为：安装目录_编译类型=编译目标。</strong></p>
+<p>缺省的安装目录<br><img src="http://7xjenw.com1.z0.glb.clouddn.com/automake1.png" alt=""></p>
+<p>automake允许自定义安装目录，例如：<code>configdir=/home/leon/src</code>其中config是自定义目录名称，dir是固定后缀，/home/leon/src是安装目录。</p>
+<p>编译类型不能自定义</p>
+<p><img src="http://7xjenw.com1.z0.glb.clouddn.com/automake2.png" alt=""></p>
+<hr>
+<p><a href="http://book.douban.com/subject/4722708/" target="_blank" rel="external"><strong>系统程序员成长计划</strong></a><br>第7章 通过三个例子详细说明了Automake/Autoconf的使用，缺点是没有太详细讲解在configure.ac和makefile.am中使用到的宏。</p>
+<p>Makefile.am的一个例子<br><figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">configdir=/home/leon/workspace/calcul_parser</span><br><span class="line"></span><br><span class="line">config_PROGRAMS=calcul</span><br><span class="line">calcul_SOURCES=calc<span class="class">.cpp</span> </span><br><span class="line">calcul_LDADD=./libtool<span class="class">.a</span> </span><br><span class="line"></span><br><span class="line">noinst_LIBRARIES=libtool<span class="class">.a</span></span><br><span class="line">libtool_a_SOURCES=calcultor<span class="class">.cpp</span>	\</span><br><span class="line">				calcultor<span class="class">.h</span>		\</span><br><span class="line">				function<span class="class">.cpp</span>	\</span><br><span class="line">				function.h</span><br></pre></td></tr></table></figure></p>
+<p><strong>其他参考</strong></p>
+<ol>
+<li><p>入门材料：<a href="http://sources.redhat.com/autobook/autobook/autobook_toc.html" target="_blank" rel="external">http://sources.redhat.com/autobook/autobook/autobook_toc.html</a> 。</p>
+</li>
+<li><p>autoconf手册：<a href="http://www.gnu.org/software/autoconf/manual/autoconf.html" target="_blank" rel="external">http://www.gnu.org/software/autoconf/manual/autoconf.html</a> 。</p>
+</li>
+<li><p>automake手册：<a href="http://sources.redhat.com/automake/automake.html" target="_blank" rel="external">http://sources.redhat.com/automake/automake.html</a> 。</p>
+</li>
+<li><p>libtool手册：<a href="http://www.gnu.org/software/libtool/manual/libtool.html" target="_blank" rel="external">http://www.gnu.org/software/libtool/manual/libtool.html</a></p>
+</li>
+<li><p>tutorial：<a href="http://www.lrde.epita.fr/~adl/dl/autotools.pdf" target="_blank" rel="external">http://www.lrde.epita.fr/~adl/dl/autotools.pdf</a> 。</p>
+</li>
+</ol>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://sjzlyl406.github.io/2015/07/01/automake-autoconf/" data-id="cibro8ypd000k5i3fliyloqd5" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/autoconf/">autoconf</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/automake/">automake</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/linux/">linux</a></li></ul>
+
+    </footer>
   </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2015/07/06/Reading-Notes/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          Reading Notes
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2015/06/23/The-Singleton-Pattern/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">The Singleton Pattern</div>
+    </a>
+  
+</nav>
+
+  
 </article>
-  
-  
-    </div></section>
-  
+
 </section>
       </div>
       <footer id="footer">
