@@ -11,7 +11,8 @@
 <meta property="og:url" content="http://sjzlyl406.github.io/2015/07/06/Reading-Notes/index.html">
 <meta property="og:site_name" content="GentleWolf's blog">
 <meta property="og:description" content="《c++ primer 中文版 第4版》 P97数组元素初始化1、在函数体外定义的内置数组，其元素均初始化位0；2、在函数体内定义的内置数组， 其元素无初始化；3、不管数组在哪里定义，如果其元素为类类型，则自动调用该类的默认构造函数进行初始化；如果该类没有默认构造函数，则必须为该数组的元素提供显示初始化。">
-<meta property="og:updated_time" content="2015-07-07T13:31:40.676Z">
+<meta property="og:image" content="http://7xjenw.com1.z0.glb.clouddn.com/list容器特有的操作.png">
+<meta property="og:updated_time" content="2015-07-09T12:04:58.780Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Reading Notes">
 <meta name="twitter:description" content="《c++ primer 中文版 第4版》 P97数组元素初始化1、在函数体外定义的内置数组，其元素均初始化位0；2、在函数体内定义的内置数组， 其元素无初始化；3、不管数组在哪里定义，如果其元素为类类型，则自动调用该类的默认构造函数进行初始化；如果该类没有默认构造函数，则必须为该数组的元素提供显示初始化。">
@@ -208,11 +209,79 @@
 <p>《c++ primer 中文版 第4版》 P158<br>显示转换<br>static_cast、dynamic_cast、const_cast、reinterpret_cast<br>dynamic_cast：运行时时别指针或引用所指向的对象。<br>const_cast：将const对象转化为对应的非const对象。<br>static_cast：静态的强制转化，可以用来代替编译器隐式的类型转换。<br>    用来找回void*指针中的值<br>    <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">double</span> d = <span class="number">7.0</span>;</span><br><span class="line"><span class="keyword">void</span> *p = &amp;d;</span><br><span class="line"><span class="keyword">double</span> *dp = <span class="keyword">static_cast</span>&lt;<span class="keyword">double</span>*&gt;(p);</span><br></pre></td></tr></table></figure></p>
 <p>reinterpret_cast：为操作数的位模式提供较低层次的重新解释。<br>    <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> *ip;</span><br><span class="line"><span class="keyword">char</span> *pc = <span class="keyword">reinterpret_cast</span>&lt;<span class="keyword">char</span>*&gt;(ip); <span class="comment">//pc指向的真实对象是int型，而非字符数组。</span></span><br></pre></td></tr></table></figure></p>
 <p>避免使用 reinterpret_cast 和 cosnt_cast，少使用 static_cast 和 dynamic_cast 。</p>
+<p>《c++ primer 中文版 第4版》 P237<br>指向函数的指针<br>定义：bool (<em>pf)(const string &amp;, const string &amp;);<br>用typedef简化函数指针的定义<br>typedef bool (</em>pf)(const string &amp;, const string &amp;);<br>直接引用函数名等效与在函数名上应用取地址操作符<br>bool lengthCompare(const string &amp;, const string &amp;);<br>pf pf1 = lengthCompare;<br>pf pf2 = &lengthCompare;<br>函数指针作形参<br>void useBigger(const string &amp;, const string &amp;,<br>        bool(const string &amp;, const string &amp;));<br>void useBigger(const string &amp;, const string &amp;,<br>        bool (<em>)(const string &amp;, const string &amp;));<br>返回指向函数的指针<br>int (</em>ff(int))(int <em>, int);    //ff(int)声明为函数，返回int(</em>)(int <em>, int)类型<br>typedef int (</em>pf)(int *, int);<br>pf ff(int);</p>
+<p>《c++ primer 中文版 第4版》 P248<br>流状态的查询和控制<br>流状态由bad、fail、eof和good操作揭示。如果bad、fail和eof中的任意一个为true，则显示流处于错误状态。如果这三个条件没有一个为true，则good将返回true。<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> val;</span><br><span class="line"><span class="keyword">while</span>(<span class="built_in">cin</span> &gt;&gt; val, !<span class="built_in">cin</span>.eof()) &#123;</span><br><span class="line">	<span class="keyword">if</span>(<span class="built_in">cin</span>.bad())			<span class="comment">//input stream is corrupted;</span></span><br><span class="line">		<span class="keyword">throw</span> runtime_error(<span class="string">"IO stream corrupted!"</span>);</span><br><span class="line">	<span class="keyword">if</span>(<span class="built_in">cin</span>.fail()) &#123;						<span class="comment">//bad input</span></span><br><span class="line">		<span class="built_in">cerr</span> &lt;&lt; <span class="string">"bad data, try again"</span>;		<span class="comment">//warn the user</span></span><br><span class="line">		<span class="built_in">cin</span>.clear(istream::failbit);		<span class="comment">//reset the stream</span></span><br><span class="line">		<span class="keyword">continue</span>;							<span class="comment">//get next input</span></span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>《c++ primer 中文版 第4版》 P276<br>避免存储end操作返回的迭代器<br>对vector和deque容器添加、删除元素时会使某些或全部迭代器失效。这样会导致某些习惯性写法带来灾难性后果。例如存储end操作返回的迭代器来“优化”循环。<br><figure class="highlight nimrod"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">vector&lt;<span class="type">int</span>&gt;::<span class="keyword">iterator</span> first = v.begin(),</span><br><span class="line">			last = v.<span class="keyword">end</span>();</span><br><span class="line"><span class="keyword">while</span>(first != last) &#123;		//disaster: behavior <span class="keyword">of</span> this loop <span class="keyword">is</span> undefined</span><br><span class="line">	first = v.insert(first, <span class="number">42</span>);</span><br><span class="line">	++first;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>为避免存储end迭代器，可以在每次做完插入运算后重新计算end迭代器的值：<br><figure class="highlight q"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">while</span>(<span class="built_in">first</span> != v.end()) &#123;	<span class="comment">//safe: recalculate end</span></span><br><span class="line">	<span class="built_in">first</span> = v.insert(<span class="built_in">first</span>, <span class="number">42</span>);</span><br><span class="line">	++<span class="built_in">first</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>《c++ primer 中文版 第4版》 P284<br>使用swap操作以节省删除元素的成本<br>swap操作时间交换两个容器内所有元素的功能。要交换的容器的类型必须匹配。<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">vector</span>&lt;<span class="built_in">string</span>&gt; svec1(<span class="number">10</span>);	<span class="comment">//vector with 10 element;</span></span><br><span class="line"><span class="built_in">vector</span>&lt;<span class="built_in">string</span>&gt; svec2(<span class="number">20</span>);	<span class="comment">//vector with 20 element;</span></span><br><span class="line">svec1.swap(svec2);</span><br></pre></td></tr></table></figure></p>
+<p>关于swap的一个重要问题在于：该操作不会删除和插入任何元素，而且保证在常量时间内实现交换。由于容器内没有移动任何元素，所以迭代器不会失效。交换之前有一迭代器iter指向svec[3]字符串；交换后该迭代器指向svec2[3]字符串。</p>
+<p>《c++ primer 中文版 第4版》 P339<br>泛型算法—<algorithm>/基于算法的函数，包括置换，排序，合并和搜索<br>        —<numeric>/数值序列上定义一组一般数学操作，如accumulate</numeric></algorithm></p>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">算法</th>
+<th style="text-align:left">描述</th>
+<th style="text-align:left">实例</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">accumulate</td>
+<td style="text-align:left">累加求和，第三个参数是非常有必要的，因为它告诉了accumulate将要操作的元素类型</td>
+<td style="text-align:left"><code>int sum = accumulate(vec.begin(), vec.end(), 42);<br>string sum = accumulate(v.begin(),v.end(),string(“”));</code></td>
+</tr>
+<tr>
+<td style="text-align:left">find_first_of</td>
+<td style="text-align:left">在第一段范围内查找与第二段范围中任意元素匹配的元素</td>
+<td style="text-align:left"><code>find_first_of(r1.begin(), r1.end(), r2.begin(),r2.end());</code></td>
+</tr>
+<tr>
+<td style="text-align:left">fill</td>
+<td style="text-align:left">写入输入序列的元素（安全）</td>
+<td style="text-align:left"><code>fill(vec.begin(),vec.end(),0);</code></td>
+</tr>
+<tr>
+<td style="text-align:left">fill_n</td>
+<td style="text-align:left">不检查写入操作的算法（不安全）</td>
+<td style="text-align:left"><code>fill_n(vec.begin(), 10, 0);</code></td>
+</tr>
+<tr>
+<td style="text-align:left">back_inserter</td>
+<td style="text-align:left">确保算法有足够的元素存储输出数据</td>
+<td style="text-align:left"><code>fill_n(back_inserter(vec),10,0);<br>效果相当于vec上调用push_back</code></td>
+</tr>
+<tr>
+<td style="text-align:left">copy</td>
+<td style="text-align:left">写入到目标迭代器的算法</td>
+<td style="text-align:left"><code>copy(list.begin(),list.end(),back_inserter(ivec));</code><br>效率比<code>vector<int> ivec(list.begin(),list.end());</int></code>差。</td>
+</tr>
+<tr>
+<td style="text-align:left">replace</td>
+<td style="text-align:left">替换特定的值</td>
+<td style="text-align:left"><code>replace(ilst.begin(), ilst.end(), 0, 42);</code></td>
+</tr>
+<tr>
+<td style="text-align:left">sort<br>stable_sort</td>
+<td style="text-align:left">排序</td>
+<td style="text-align:left"><code>stable_sort(vec.begin(),vec.end(),isShorter);</code></td>
+</tr>
+<tr>
+<td style="text-align:left">count_if</td>
+<td style="text-align:left">满足条件的统计</td>
+<td style="text-align:left"><code>count_if(words.begin(), words.end(), GT6);</code></td>
+</tr>
+</tbody>
+</table>
+<p>《c++ primer 中文版 第4版》 P361<br>list容器特有的操作<br>list容器迭代器是双向的，而不是随机访问的，在list上使用泛型算法，会在性能上付出高昂代价。所以对于list对象，应该优先使用list容器特有成员版本。<br><img src="http://7xjenw.com1.z0.glb.clouddn.com/list容器特有的操作.png" alt=""></p>
+<div align="center">图片来源：《c++ primer 中文版 第4版》</div>
+
+
+<p>《c++ primer 中文版 第4版》 P377<br>从const成员函数返回<em>this<br>this指针有两种：一种是指向类类型的const指针，可以改变this所指向的值，但不能改变this所保存的地址；另外一种是指向const类类型对象的const指针，既不能改变this所指向的对象，又不能改变this所保存的地址。<br>从const成员函数返回的</em>this属于第二种this指针。不能改变this所指的对象。<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">Screen&amp; display(<span class="built_in">std</span>::ostream &amp;os)</span><br><span class="line">&#123;</span><br><span class="line">	do_display(os);</span><br><span class="line">	<span class="keyword">return</span> *<span class="keyword">this</span>;	<span class="comment">//第1类this指针</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">const</span> Screen&amp; display(<span class="built_in">std</span>::ostream *os) <span class="keyword">const</span></span><br><span class="line">&#123;</span><br><span class="line">	do_display(os);</span><br><span class="line">	<span class="keyword">return</span> *<span class="keyword">this</span>;	<span class="comment">//第2类this指针</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://sjzlyl406.github.io/2015/07/06/Reading-Notes/" data-id="cibtdl9eg000yvx3fgnsvyyo9" class="article-share-link">Share</a>
+      <a data-url="http://sjzlyl406.github.io/2015/07/06/Reading-Notes/" data-id="cibvuvkzo000y913fwrp369ml" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Reading/">Reading</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/notes/">notes</a></li></ul>
