@@ -5,16 +5,19 @@
   
   <title>The Singleton Pattern | GentleWolf&#39;s blog</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="这个模式是由Erich Gamma、Richard Helm、Ralph Johnson、John Vlissides在Design Patterns: Elements of Reusable Object-Oriented Software中提出的23个设计模式中的一个。关于设计模式的概念更多看这里和这里，如果下半年有时间可以试着用c/c++实现这些模式，相比会对理解面向对象编程更有帮助。">
+  <meta name="description" content="这个模式是由Erich Gamma、Richard Helm、Ralph Johnson、John Vlissides在Design Patterns: Elements of Reusable Object-Oriented Software中提出的23个设计模式中的一个。关于设计模式的概念更多看这里和这里，如果下半年有时间可以试着用c/c++实现这些模式，相比会对理解面向对象编程更有帮助。
+设">
 <meta property="og:type" content="article">
 <meta property="og:title" content="The Singleton Pattern">
 <meta property="og:url" content="http://sjzlyl406.github.io/2015/06/23/The-Singleton-Pattern/index.html">
 <meta property="og:site_name" content="GentleWolf's blog">
-<meta property="og:description" content="这个模式是由Erich Gamma、Richard Helm、Ralph Johnson、John Vlissides在Design Patterns: Elements of Reusable Object-Oriented Software中提出的23个设计模式中的一个。关于设计模式的概念更多看这里和这里，如果下半年有时间可以试着用c/c++实现这些模式，相比会对理解面向对象编程更有帮助。">
-<meta property="og:updated_time" content="2015-07-01T02:33:53.625Z">
+<meta property="og:description" content="这个模式是由Erich Gamma、Richard Helm、Ralph Johnson、John Vlissides在Design Patterns: Elements of Reusable Object-Oriented Software中提出的23个设计模式中的一个。关于设计模式的概念更多看这里和这里，如果下半年有时间可以试着用c/c++实现这些模式，相比会对理解面向对象编程更有帮助。
+设">
+<meta property="og:updated_time" content="2015-07-22T02:33:42.869Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="The Singleton Pattern">
-<meta name="twitter:description" content="这个模式是由Erich Gamma、Richard Helm、Ralph Johnson、John Vlissides在Design Patterns: Elements of Reusable Object-Oriented Software中提出的23个设计模式中的一个。关于设计模式的概念更多看这里和这里，如果下半年有时间可以试着用c/c++实现这些模式，相比会对理解面向对象编程更有帮助。">
+<meta name="twitter:description" content="这个模式是由Erich Gamma、Richard Helm、Ralph Johnson、John Vlissides在Design Patterns: Elements of Reusable Object-Oriented Software中提出的23个设计模式中的一个。关于设计模式的概念更多看这里和这里，如果下半年有时间可以试着用c/c++实现这些模式，相比会对理解面向对象编程更有帮助。
+设">
   
   
     <link rel="icon" href="/favicon.ico">
@@ -86,7 +89,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Archives</h3>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/07/">July 2015</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/06/">June 2015</a><span class="archive-list-count">7</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/05/">May 2015</a><span class="archive-list-count">1</span></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/07/">July 2015</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/06/">June 2015</a><span class="archive-list-count">7</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/05/">May 2015</a><span class="archive-list-count">1</span></li></ul>
     </div>
   </div>
 
@@ -98,6 +101,14 @@
       <ul>
         
           <li>
+            <a href="/2015/07/22/Static变量问题/">Static变量问题</a>
+          </li>
+        
+          <li>
+            <a href="/2015/07/19/TCP-IP一些问题记录/">TCP/IP一些问题记录</a>
+          </li>
+        
+          <li>
             <a href="/2015/07/19/派生类的构造函数和虚析构函数/">派生类的构造函数和虚析构函数</a>
           </li>
         
@@ -107,14 +118,6 @@
         
           <li>
             <a href="/2015/07/01/automake-autoconf/">Automake/Autoconf</a>
-          </li>
-        
-          <li>
-            <a href="/2015/06/23/The-Singleton-Pattern/">The Singleton Pattern</a>
-          </li>
-        
-          <li>
-            <a href="/2015/06/12/pthreads-in-C-a-minimal-working-example/">pthreads in C - a minimal working example</a>
           </li>
         
       </ul>
@@ -204,18 +207,21 @@
     <div class="article-entry" itemprop="articleBody">
       
         <p>这个模式是由Erich Gamma、Richard Helm、Ralph Johnson、John Vlissides在<a href="http://www.uml.org.cn/c++/pdf/DesignPatterns.pdf" target="_blank" rel="external">Design Patterns: Elements of Reusable Object-Oriented Software</a>中提出的23个设计模式中的一个。关于设计模式的概念更多看<a href="http://www.jwss.cc/?q=design+pattern" target="_blank" rel="external">这里</a>和<a href="www.chinaitlab.com/c/special/sjms/Index.html#e">这里</a>，如果下半年有时间可以试着用c/c++实现这些模式，相比会对理解面向对象编程更有帮助。</p>
-<a id="more"></a>
+<p><a href="http://www.cnblogs.com/cbf4life/tag/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/" target="_blank" rel="external">设计模式</a><br><a id="more"></a></p>
 <p>singleton模式保证一个类仅仅有一个实例，并提供一个访问它的全局接口。如果把这个概念映射到这个世界的话，好像是指这个事物(实例)是世界上独一无二，很厉害！但是可想而知，这样类型的事物并不会太常见。比较适用于使用singleton的情景有<a href="http://stackoverflow.com/questions/86582/singleton-how-should-it-be-used" title="stackoverflow.com" target="_blank" rel="external">日志框架和日志回收池</a></p>
 <p>经典的实现方式是基于创建指针指向静态对象，</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> Singleton</span><br><span class="line">&#123;</span><br><span class="line">	<span class="keyword">public</span>:</span><br><span class="line">		<span class="keyword">static</span> Singleton* instance();</span><br><span class="line">	<span class="keyword">private</span>:</span><br><span class="line">		Singleton();   <span class="comment">//don't implement</span></span><br><span class="line"></span><br><span class="line">		Singleton(<span class="keyword">const</span> Singleton&amp;);   <span class="comment">//don't implement</span></span><br><span class="line">		Singleton&amp; <span class="keyword">operator</span>=(<span class="keyword">const</span> Singleton&amp;);  <span class="comment">//don't implement</span></span><br><span class="line"></span><br><span class="line">		Singleton* pInstance;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">static</span> Singleton* Singleton::pInstance = <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line">Singleton* Singleton::instance() &#123;</span><br><span class="line">	<span class="keyword">if</span>(pInstance == <span class="number">0</span>) &#123;</span><br><span class="line">		pInstance = <span class="keyword">new</span> Singleton();</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> pInstance;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> Singleton</span><br><span class="line">&#123;</span><br><span class="line">	<span class="keyword">public</span>:</span><br><span class="line">		<span class="keyword">static</span> Singleton* instance();</span><br><span class="line">		<span class="function"><span class="keyword">static</span> <span class="keyword">void</span> <span class="title">foo</span><span class="params">()</span></span>&#123;</span><br><span class="line">			<span class="built_in">printf</span>(<span class="string">"hello world!\n"</span>);</span><br><span class="line">		&#125;</span><br><span class="line">	<span class="keyword">private</span>:</span><br><span class="line">		Singleton()&#123;&#125;   <span class="comment">//implement</span></span><br><span class="line"></span><br><span class="line">		Singleton(<span class="keyword">const</span> Singleton&amp;);   <span class="comment">//don't implement</span></span><br><span class="line">		Singleton&amp; <span class="keyword">operator</span>=(<span class="keyword">const</span> Singleton&amp;);  <span class="comment">//don't implement</span></span><br><span class="line"></span><br><span class="line">		<span class="keyword">static</span> Singleton* pInstance;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">Singleton* Singleton::pInstance = <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line">Singleton* Singleton::instance() &#123;</span><br><span class="line">	<span class="keyword">if</span>(pInstance == <span class="number">0</span>) &#123;</span><br><span class="line">		pInstance = <span class="keyword">new</span> Singleton();</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> pInstance;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>使用的时候可以定义Sigleton的指针指向Sigleton对象，<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">Singleton *s1 = Singleton::instance();</span><br><span class="line">s1-&gt;foo();</span><br><span class="line"></span><br><span class="line">Singleton *s2 = s1;		<span class="comment">//ok, s1,s2 point to the same instance;</span></span><br><span class="line">s2-&gt;foo();</span><br></pre></td></tr></table></figure></p>
 <p>另外一种写法是返回singleton实例的引用，而不是指针。这样就不必担心释放singleto实例的问题。是不是singleton常常被用作全局变量，所以不用担心内存释放问题？我工程搞的少，这个问题以后解决。</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> Singleton</span><br><span class="line">&#123;</span><br><span class="line">	<span class="keyword">public</span>:</span><br><span class="line">		<span class="keyword">static</span> Singleton&amp; instance();</span><br><span class="line">	<span class="keyword">private</span>:</span><br><span class="line">		Singleton();   <span class="comment">//don't implement</span></span><br><span class="line"></span><br><span class="line">		Singleton(<span class="keyword">const</span> Singleton&amp;);   <span class="comment">//don't implement</span></span><br><span class="line">		Singleton&amp; <span class="keyword">operator</span>=(<span class="keyword">const</span> Singleton&amp;);  <span class="comment">//don't implement</span></span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">Singleton&amp; Singleton::instance() &#123;</span><br><span class="line">	<span class="keyword">static</span> Singleton Instance;</span><br><span class="line">	<span class="keyword">return</span> Instance;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> Singleton</span><br><span class="line">&#123;</span><br><span class="line">	<span class="keyword">public</span>:</span><br><span class="line">		<span class="keyword">static</span> Singleton&amp; instance();</span><br><span class="line">		<span class="function"><span class="keyword">static</span> <span class="keyword">void</span> <span class="title">foo</span><span class="params">()</span></span>&#123;</span><br><span class="line">			<span class="built_in">printf</span>(<span class="string">"hello world!\n"</span>);</span><br><span class="line">		&#125;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">private</span>:</span><br><span class="line">		Singleton()&#123;&#125;   <span class="comment">//implement</span></span><br><span class="line"></span><br><span class="line">		Singleton(<span class="keyword">const</span> Singleton&amp;);   <span class="comment">//don't implement</span></span><br><span class="line">		Singleton&amp; <span class="keyword">operator</span>=(<span class="keyword">const</span> Singleton&amp;);  <span class="comment">//don't implement</span></span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">Singleton&amp; Singleton::instance() &#123;</span><br><span class="line">	<span class="keyword">static</span> Singleton Instance;</span><br><span class="line">	<span class="keyword">return</span> Instance;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>使用的时候同样使用Singleton指针指向Singleton对象，<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">Singleton *s1 = &amp;Singleton::instance();</span><br><span class="line">s1-&gt;foo();</span><br><span class="line">Singleton *s2 = s1;</span><br><span class="line">s2 -&gt; foo();</span><br></pre></td></tr></table></figure></p>
+<p>因为构造函数为私有成员函数，所以不能定义Singleton对象。<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Singleton s1 = Singleton::instance();	<span class="comment">//error</span></span><br></pre></td></tr></table></figure></p>
 <p>这个模型适合单线程环境中，而在多线程环境中可能会出现错误。<br>在多线程环境下，用c++实现线程安全的Singleton。<a href="http://www.cnblogs.com/liyuan989/p/4264889.html" target="_blank" rel="external">c++中多线程与Singleton的那些事儿</a>。<br><a href="http://www.aristeia.com/Papers/DDJ_Jul_Aug_2004_revised.pdf" target="_blank" rel="external">C++ and the Perils of Double-Checked Locking</a></p>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://sjzlyl406.github.io/2015/06/23/The-Singleton-Pattern/" data-id="cica5d582000sbw3fhk45j0ew" class="article-share-link">Share</a>
+      <a data-url="http://sjzlyl406.github.io/2015/06/23/The-Singleton-Pattern/" data-id="cicerofoq000sly3fkmbga20z" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/design-pattern/">design pattern</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/singleton/">singleton</a></li></ul>

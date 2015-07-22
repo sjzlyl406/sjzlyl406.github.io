@@ -3,17 +3,21 @@
 <head>
   <meta charset="utf-8">
   
-  <title>Tag: Eclipse | GentleWolf&#39;s blog</title>
+  <title>Static变量问题 | GentleWolf&#39;s blog</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description">
-<meta property="og:type" content="website">
-<meta property="og:title" content="GentleWolf's blog">
-<meta property="og:url" content="http://sjzlyl406.github.io/tags/Eclipse/index.html">
+  <meta name="description" content="关于c++中static变量的初始化时间，生存周期和作用域进行研究，得到下列结论。
+1、全局static初始化时间在main函数执行之前，释放时间是main函数执行之后。2、类中static成员函数初始化时间在main函数执行之前，释放时间在main函数执行之后。3、局部static变量的生存周期和作用域在离它最近的块中。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Static变量问题">
+<meta property="og:url" content="http://sjzlyl406.github.io/2015/07/22/Static变量问题/index.html">
 <meta property="og:site_name" content="GentleWolf's blog">
-<meta property="og:description">
+<meta property="og:description" content="关于c++中static变量的初始化时间，生存周期和作用域进行研究，得到下列结论。
+1、全局static初始化时间在main函数执行之前，释放时间是main函数执行之后。2、类中static成员函数初始化时间在main函数执行之前，释放时间在main函数执行之后。3、局部static变量的生存周期和作用域在离它最近的块中。">
+<meta property="og:updated_time" content="2015-07-22T13:12:16.330Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="GentleWolf's blog">
-<meta name="twitter:description">
+<meta name="twitter:title" content="Static变量问题">
+<meta name="twitter:description" content="关于c++中static变量的初始化时间，生存周期和作用域进行研究，得到下列结论。
+1、全局static初始化时间在main函数执行之前，释放时间是main函数执行之后。2、类中static成员函数初始化时间在main函数执行之前，释放时间在main函数执行之后。3、局部static变量的生存周期和作用域在离它最近的块中。">
   
   
     <link rel="icon" href="/favicon.ico">
@@ -176,39 +180,62 @@
   
 </aside>
         
-        <section id="main">
-  
-  
-    
-    
-      
-      
-      <section class="archives-wrap">
-        <div class="archive-year-wrap">
-          <a href="/archives/2015" class="archive-year">2015</a>
-        </div>
-        <div class="archives">
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      <a href="/2015/06/04/Eclipse-CDT-4-4支持c-11标准/" class="archive-article-date">
-  <time datetime="2015-06-04T07:04:53.000Z" itemprop="datePublished">Jun 4</time>
+        <section id="main"><article id="post-Static变量问题" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2015/07/22/Static变量问题/" class="article-date">
+  <time datetime="2015-07-22T12:26:18.000Z" itemprop="datePublished">2015-07-22</time>
 </a>
-      
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
   
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2015/06/04/Eclipse-CDT-4-4支持c-11标准/">Eclipse CDT 4.4支持c++11标准</a>
+    <h1 class="article-title" itemprop="name">
+      Static变量问题
     </h1>
   
 
-    </header>
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>关于c++中static变量的初始化时间，生存周期和作用域进行研究，得到下列结论。</p>
+<p>1、全局static初始化时间在main函数执行之前，释放时间是main函数执行之后。<br>2、类中static成员函数初始化时间在main函数执行之前，释放时间在main函数执行之后。<br>3、局部static变量的生存周期和作用域在离它最近的块中。</p>
+<a id="more"></a>
+<p><strong>第一部分：</strong><br>为了验证全局static变量初始化和生存周期，定义一个类，该类构造函数和析构函数打印出该类对象的创建和销毁。<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> StaticTest &#123;</span><br><span class="line">	<span class="keyword">public</span>:</span><br><span class="line">		StaticTest() &#123; <span class="built_in">printf</span>(<span class="string">"static instance create!\n"</span>); &#125;</span><br><span class="line">		~StaticTest() &#123; <span class="built_in">printf</span>(<span class="string">"static instance destroy!\n"</span>); &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure></p>
+<p>在程序文件test.cpp中定义一个该类的全局static变量，运行该程序，看此全局变量初始化和销毁时间。<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//在test.cpp中</span></span><br><span class="line"><span class="keyword">static</span> StaticTest hh;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">(<span class="keyword">void</span>)</span></span><br><span class="line"></span>&#123;</span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">"main start!\n"</span>);</span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">"main stop!\n"</span>);</span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>运行结果：<br><figure class="highlight smali"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">static<span class="instruction"> instance </span>create!</span><br><span class="line">main start!</span><br><span class="line">main stop!<span class="keyword"></span><br><span class="line">static</span><span class="instruction"> instance </span>destroy!</span><br></pre></td></tr></table></figure></p>
+<p><strong>第二部分：</strong><br>新建一个test类，这个类包含一个static成员变量，通过观察这个static成员变量的初始化和销毁时间来研究static成员变量的初始化时间。<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> test &#123;</span><br><span class="line">	<span class="keyword">static</span> StaticTest hh;	</span><br><span class="line">&#125;;</span><br><span class="line">StaticTest test::hh = *(<span class="keyword">new</span> StaticTest);</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">(<span class="keyword">void</span>)</span></span><br><span class="line"></span>&#123;</span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">"main start!\n"</span>);</span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">"main stop!\n"</span>);</span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>运行结果：<br><figure class="highlight smali"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">static<span class="instruction"> instance </span>create!</span><br><span class="line">main start!</span><br><span class="line">main stop!<span class="keyword"></span><br><span class="line">static</span><span class="instruction"> instance </span>destroy!</span><br></pre></td></tr></table></figure></p>
+<p><strong>第三部分：</strong><br>在main函数中定义一个if块，在块中定义一个局部static变量，观察这个局部static变量的生存时间和作用域。<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">(<span class="keyword">void</span>)</span></span><br><span class="line"></span>&#123;</span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">"main start!\n"</span>);</span><br><span class="line">	<span class="keyword">if</span>(<span class="keyword">true</span>) &#123;</span><br><span class="line">		StaticTest tt;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">"main stop!\n"</span>);</span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>运行结果：<br><figure class="highlight smali"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">main start!<span class="keyword"></span><br><span class="line">static</span><span class="instruction"> instance </span>create!<span class="keyword"></span><br><span class="line">static</span><span class="instruction"> instance </span>dectroy!</span><br><span class="line">main stop!</span><br></pre></td></tr></table></figure></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://sjzlyl406.github.io/2015/07/22/Static变量问题/" data-id="cicerofp60010ly3ff4cawqe4" class="article-share-link">Share</a>
+      
+      
+    </footer>
   </div>
+  
+    
+<nav id="article-nav">
+  
+  
+    <a href="/2015/07/19/TCP-IP一些问题记录/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">TCP/IP一些问题记录</div>
+    </a>
+  
+</nav>
+
+  
 </article>
-  
-  
-    </div></section>
-  
+
 </section>
       </div>
       <footer id="footer">
