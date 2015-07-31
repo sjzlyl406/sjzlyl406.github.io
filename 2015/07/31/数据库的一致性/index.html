@@ -3,17 +3,18 @@
 <head>
   <meta charset="utf-8">
   
-  <title>Tag: design pattern | GentleWolf&#39;s blog</title>
+  <title>数据库的一致性 | GentleWolf&#39;s blog</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description">
-<meta property="og:type" content="website">
-<meta property="og:title" content="GentleWolf's blog">
-<meta property="og:url" content="http://sjzlyl406.github.io/tags/design-pattern/index.html">
+  <meta name="description" content="众所周知数据库事务具有4大属性(ACID)，其中consistency属性意思是指事物开始之前和结束之后都要保证数据库中数据的一致性。很简单的一句话，但是什么是数据的一致性呢？对此我有2各方面的理解。下面详述。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="数据库的一致性">
+<meta property="og:url" content="http://sjzlyl406.github.io/2015/07/31/数据库的一致性/index.html">
 <meta property="og:site_name" content="GentleWolf's blog">
-<meta property="og:description">
+<meta property="og:description" content="众所周知数据库事务具有4大属性(ACID)，其中consistency属性意思是指事物开始之前和结束之后都要保证数据库中数据的一致性。很简单的一句话，但是什么是数据的一致性呢？对此我有2各方面的理解。下面详述。">
+<meta property="og:updated_time" content="2015-07-31T04:53:00.906Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="GentleWolf's blog">
-<meta name="twitter:description">
+<meta name="twitter:title" content="数据库的一致性">
+<meta name="twitter:description" content="众所周知数据库事务具有4大属性(ACID)，其中consistency属性意思是指事物开始之前和结束之后都要保证数据库中数据的一致性。很简单的一句话，但是什么是数据的一致性呢？对此我有2各方面的理解。下面详述。">
   
   
     <link rel="icon" href="/favicon.ico">
@@ -176,39 +177,125 @@
   
 </aside>
         
-        <section id="main">
-  
-  
-    
-    
-      
-      
-      <section class="archives-wrap">
-        <div class="archive-year-wrap">
-          <a href="/archives/2015" class="archive-year">2015</a>
-        </div>
-        <div class="archives">
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      <a href="/2015/06/23/The-Singleton-Pattern/" class="archive-article-date">
-  <time datetime="2015-06-23T12:41:31.000Z" itemprop="datePublished">Jun 23</time>
+        <section id="main"><article id="post-数据库的一致性" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2015/07/31/数据库的一致性/" class="article-date">
+  <time datetime="2015-07-31T03:27:26.000Z" itemprop="datePublished">2015-07-31</time>
 </a>
-      
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
   
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2015/06/23/The-Singleton-Pattern/">The Singleton Pattern</a>
+    <h1 class="article-title" itemprop="name">
+      数据库的一致性
     </h1>
   
 
-    </header>
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>众所周知数据库事务具有4大属性(ACID)，其中consistency属性意思是指事物开始之前和结束之后都要保证数据库中数据的一致性。<br>很简单的一句话，但是什么是数据的一致性呢？对此我有2各方面的理解。下面详述。</p>
+<a id="more"></a>
+<p>数据一致性主要是指数据符合实际情况，或者说数据库中存储的数据与我们对数据的预期是一样的。这句话说起来有点抽象，但是换个角度说明什么导致数据的不一致性，就会明白什么是数据的一致性。<br>我认为主要有两点导致数据的不一致性。<br><strong>1、数据冗余导致数据不一致性</strong><br>考虑如下存储</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">StudenNo</th>
+<th style="text-align:left">Name</th>
+<th style="text-align:left">Class</th>
+<th style="text-align:left">ClassAddr</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">01</td>
+<td style="text-align:left">leon</td>
+<td style="text-align:left">1301</td>
+<td style="text-align:left">#A13</td>
+</tr>
+<tr>
+<td style="text-align:left">02</td>
+<td style="text-align:left">danny</td>
+<td style="text-align:left">1301</td>
+<td style="text-align:left">#A13</td>
+</tr>
+<tr>
+<td style="text-align:left">01</td>
+<td style="text-align:left">kol</td>
+<td style="text-align:left">1302</td>
+<td style="text-align:left">#A14</td>
+</tr>
+</tbody>
+</table>
+<p>这个数据表是由<code>StudeNo</code>和<code>Class</code>共同担当主键，而<code>ClassAddr</code>依赖与<code>Class</code>所以这个表其实不符合第二泛式的完全依赖原则，从而带来数据冗余。</p>
+<p>如果我们要将danny的班级改为1302；<br><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="operator"><span class="keyword">UPDATE</span> table1 <span class="keyword">SET</span> Class=<span class="number">1302</span> <span class="keyword">WHERE</span> Name=<span class="string">'danny'</span>;</span></span><br></pre></td></tr></table></figure></p>
+<p>执行完成后表格变为</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">StudenNo</th>
+<th style="text-align:left">Name</th>
+<th style="text-align:left">Class</th>
+<th style="text-align:left">ClassAddr</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">01</td>
+<td style="text-align:left">leon</td>
+<td style="text-align:left">1301</td>
+<td style="text-align:left">#A13</td>
+</tr>
+<tr>
+<td style="text-align:left">02</td>
+<td style="text-align:left">danny</td>
+<td style="text-align:left">1302</td>
+<td style="text-align:left">#A13</td>
+</tr>
+<tr>
+<td style="text-align:left">01</td>
+<td style="text-align:left">kol</td>
+<td style="text-align:left">1302</td>
+<td style="text-align:left">#A14</td>
+</tr>
+</tbody>
+</table>
+<p>执行完成后danny的班级为1302但是他的ClassAddr还是#A13，因此数据不一致。</p>
+<p><strong>2、缺乏锁机制导致数据不一致</strong></p>
+<p>数据库帐户信息表中有一个用户(user=leon)字段，该用户(user=leon)的帐户余额字段为(balance=200);</p>
+<p>定义两个操作并发执行；<br>1：操作员A将其读出(user=leon)，并从余额中扣除50(200-50);<br>2：操作员B将其读出(user=leon)，并从余额中扣除20(200-20);</p>
+<p>并发执行完成后，预期存储结果为用户(user=leon)的帐户余额为(balance=130);</p>
+<p>但是如果缺乏锁机制，且执行顺序为：<br>1、操作员A将其读出(user=leon)；<br>2、操作员B将其读出(user=leon)；<br>3、操作员A从余额中扣除50(200-50)，结果存入表格(balance=150)；<br>4、操作员B从余额中扣除20(200-20)，结果存入表格(balance=180)；</p>
+<p>此时用和(user=leon)的帐户余额为(balance=180)与预期帐户余额(balance=130)不一致。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://sjzlyl406.github.io/2015/07/31/数据库的一致性/" data-id="cicr4wuwo00035a3fwn7o5qjo" class="article-share-link">Share</a>
+      
+      
+    </footer>
   </div>
+  
+    
+<nav id="article-nav">
+  
+  
+    <a href="/2015/07/22/Static变量问题/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">Static变量问题</div>
+    </a>
+  
+</nav>
+
+  
 </article>
-  
-  
-    </div></section>
-  
+
 </section>
       </div>
       <footer id="footer">
