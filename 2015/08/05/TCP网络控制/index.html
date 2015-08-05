@@ -3,17 +3,22 @@
 <head>
   <meta charset="utf-8">
   
-  <title>Tag: Book List | GentleWolf&#39;s blog</title>
+  <title>TCP网络控制 | GentleWolf&#39;s blog</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description">
-<meta property="og:type" content="website">
-<meta property="og:title" content="GentleWolf's blog">
-<meta property="og:url" content="http://sjzlyl406.github.io/tags/Book-List/index.html">
+  <meta name="description" content="TCP是一种复杂的协议，为了保证数据的可靠性传输，做了很多工作，如，建立逻辑连接，序列号保证数据包顺序，滑动窗匹配发送端发送和接收端接受的能力，错误重传能力，以及避免网络拥塞带来丢包问题。
+TCP为了避免网络拥塞带来的丢包问题，就要检测到网络的状态，以及当发生网络拥塞时减少拥塞。TCP检测网络的状态主要通过两种方式：ACK重复请求和ACK超时。这两种方式对应了网络拥塞不太严重和严重两种状态。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="TCP网络控制">
+<meta property="og:url" content="http://sjzlyl406.github.io/2015/08/05/TCP网络控制/index.html">
 <meta property="og:site_name" content="GentleWolf's blog">
-<meta property="og:description">
+<meta property="og:description" content="TCP是一种复杂的协议，为了保证数据的可靠性传输，做了很多工作，如，建立逻辑连接，序列号保证数据包顺序，滑动窗匹配发送端发送和接收端接受的能力，错误重传能力，以及避免网络拥塞带来丢包问题。
+TCP为了避免网络拥塞带来的丢包问题，就要检测到网络的状态，以及当发生网络拥塞时减少拥塞。TCP检测网络的状态主要通过两种方式：ACK重复请求和ACK超时。这两种方式对应了网络拥塞不太严重和严重两种状态。">
+<meta property="og:image" content="http://7xjenw.com1.z0.glb.clouddn.com/拥塞控制.png">
+<meta property="og:updated_time" content="2015-08-05T09:08:02.266Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="GentleWolf's blog">
-<meta name="twitter:description">
+<meta name="twitter:title" content="TCP网络控制">
+<meta name="twitter:description" content="TCP是一种复杂的协议，为了保证数据的可靠性传输，做了很多工作，如，建立逻辑连接，序列号保证数据包顺序，滑动窗匹配发送端发送和接收端接受的能力，错误重传能力，以及避免网络拥塞带来丢包问题。
+TCP为了避免网络拥塞带来的丢包问题，就要检测到网络的状态，以及当发生网络拥塞时减少拥塞。TCP检测网络的状态主要通过两种方式：ACK重复请求和ACK超时。这两种方式对应了网络拥塞不太严重和严重两种状态。">
   
   
     <link rel="icon" href="/favicon.ico">
@@ -176,39 +181,67 @@
   
 </aside>
         
-        <section id="main">
-  
-  
-    
-    
-      
-      
-      <section class="archives-wrap">
-        <div class="archive-year-wrap">
-          <a href="/archives/2015" class="archive-year">2015</a>
-        </div>
-        <div class="archives">
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      <a href="/2015/06/06/Preparation-for-job-interview/" class="archive-article-date">
-  <time datetime="2015-06-06T08:44:41.000Z" itemprop="datePublished">Jun 6</time>
+        <section id="main"><article id="post-TCP网络控制" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2015/08/05/TCP网络控制/" class="article-date">
+  <time datetime="2015-08-05T08:09:18.000Z" itemprop="datePublished">2015-08-05</time>
 </a>
-      
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
   
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2015/06/06/Preparation-for-job-interview/">Preparation for job interview</a>
+    <h1 class="article-title" itemprop="name">
+      TCP网络控制
     </h1>
   
 
-    </header>
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>TCP是一种复杂的协议，为了保证数据的可靠性传输，做了很多工作，如，建立逻辑连接，序列号保证数据包顺序，滑动窗匹配发送端发送和接收端接受的能力，错误重传能力，以及避免网络拥塞带来丢包问题。</p>
+<p>TCP为了避免网络拥塞带来的丢包问题，就要检测到网络的状态，以及当发生网络拥塞时减少拥塞。TCP检测网络的状态主要通过两种方式：ACK重复请求和ACK超时。这两种方式对应了网络拥塞不太严重和严重两种状态。</p>
+<a id="more"></a>
+<p><strong>TCP检测网络状态</strong></p>
+<p>ACK重复请求是快速重传机制，比如要发送序列号为1、2、3、4、5的5个数据包，其中1、2、4、5正确接受，而3丢失，则接收端发送4、5的ACK回复时一直请求3，发送端接受到连续的对3的ACK请求，则知道3数据包丢失，从而重新发送3数据包。<br>ACK超时请求是发送了数据包后开始计时，一直到超过RTO（Retranmission TimeOut）都没有受到ACK回复。</p>
+<p>对于ACK重复请求和ACK超时两种情况，TCP都认为是发生了网络拥塞。其中，ACK重复请求说明网络拥塞情况不是太严重；而ACK超时说明网络拥塞情况非常严重。</p>
+<p><strong>TCP拥塞控制方法</strong></p>
+<p>TCP对于网络拥塞情况的处理算法，主要有慢启动、拥塞避免、拥塞发生、快速恢复。</p>
+<p>慢启动是说在刚进入网络中时将congesion window长度设置为1。然后每收到一个ACK回复将长度*2。这样好像在入网时有一个探测过程，控制发送包的数量逐渐增加，而且越加越快。但是不可能无限制增加，因此存在一个阈值sshthresh，当congesion window的长度达到sshthresh时，增长速度减慢，编程缓慢增长。同时将算法转变为拥塞避免算法。</p>
+<p>拥塞避免就是在慢启动达到阈值时，将congesion window的长度增长速度减慢下来，同时检测是不是有网络拥塞。如果发生了ACK重复请求时，说明网络发生了拥塞但是不是很严重，这时，拥塞避免算法将sshthresh值降低一半，从而自身发送数据包也会降低将近一半的数量从而缓解网络拥塞情况。</p>
+<p>如果发生了ACK超时请求，说明网络急剧恶化，那么由拥塞发生算法控制，该算法直接将sshthresh的降低一半然后将congesion window长度重置为1，并进入慢启动过程。</p>
+<p>快速恢复算法用于拥塞避免中发生ACK重复请求时，如果ACK重复请求达到3个，说明网络拥塞不那么糟糕，没必要引起太剧烈的反应，因此将congesion window长度快速恢复，同时能快的进入正常传输状态。</p>
+<p><img src="http://7xjenw.com1.z0.glb.clouddn.com/拥塞控制.png" alt=""></p>
+<p>知识扩展</p>
+<p>本文默认已经了解关于超时重传以及快速重传概念，如果不明白可以阅读博文<br><a href="http://coolshell.cn/articles/11564.html" target="_blank" rel="external">TCP的那些事儿（上） 陈皓</a><br>关于TCP通过窗长度进行发送包数量控制参考博文<br><a href="http://www.cnblogs.com/vamei/archive/2012/12/18/2822739.html" target="_blank" rel="external">协议森林10 魔鬼细节（TCP划窗管理） Vamei</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://sjzlyl406.github.io/2015/08/05/TCP网络控制/" data-id="cicyj1b9h0010lg3fvypb8ehr" class="article-share-link">Share</a>
+      
+      
+    </footer>
   </div>
+  
+    
+<nav id="article-nav">
+  
+  
+    <a href="/2015/07/31/数据库的一致性/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">数据库的一致性</div>
+    </a>
+  
+</nav>
+
+  
 </article>
-  
-  
-    </div></section>
-  
+
 </section>
       </div>
       <footer id="footer">
