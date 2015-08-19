@@ -3,17 +3,21 @@
 <head>
   <meta charset="utf-8">
   
-  <title>Archives: 2015/7 | GentleWolf&#39;s blog</title>
+  <title>洗牌算法和抽样算法 | GentleWolf&#39;s blog</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description">
-<meta property="og:type" content="website">
-<meta property="og:title" content="GentleWolf's blog">
-<meta property="og:url" content="http://sjzlyl406.github.io/archives/2015/07/index.html">
+  <meta name="description" content="这是两个关于随机性的题，但是两者有不一样的解题思路。
+洗牌算法：是给一定数量的牌，乱序后输出。抽样算法：等概率的从n个数中随机抽去出m个。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="洗牌算法和抽样算法">
+<meta property="og:url" content="http://sjzlyl406.github.io/2015/08/19/洗牌算法和抽样算法/index.html">
 <meta property="og:site_name" content="GentleWolf's blog">
-<meta property="og:description">
+<meta property="og:description" content="这是两个关于随机性的题，但是两者有不一样的解题思路。
+洗牌算法：是给一定数量的牌，乱序后输出。抽样算法：等概率的从n个数中随机抽去出m个。">
+<meta property="og:updated_time" content="2015-08-19T08:17:59.445Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="GentleWolf's blog">
-<meta name="twitter:description">
+<meta name="twitter:title" content="洗牌算法和抽样算法">
+<meta name="twitter:description" content="这是两个关于随机性的题，但是两者有不一样的解题思路。
+洗牌算法：是给一定数量的牌，乱序后输出。抽样算法：等概率的从n个数中随机抽去出m个。">
   
   
     <link rel="icon" href="/favicon.ico">
@@ -176,134 +180,64 @@
   
 </aside>
         
-        <section id="main">
-  
-  
-    
-    
-      
-      
-      <section class="archives-wrap">
-        <div class="archive-year-wrap">
-          <a href="/archives/2015" class="archive-year">2015</a>
-        </div>
-        <div class="archives">
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      <a href="/2015/07/31/数据库的一致性/" class="archive-article-date">
-  <time datetime="2015-07-31T03:27:26.000Z" itemprop="datePublished">Jul 31</time>
+        <section id="main"><article id="post-洗牌算法和抽样算法" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2015/08/19/洗牌算法和抽样算法/" class="article-date">
+  <time datetime="2015-08-19T06:36:34.000Z" itemprop="datePublished">2015-08-19</time>
 </a>
-      
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
   
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2015/07/31/数据库的一致性/">数据库的一致性</a>
+    <h1 class="article-title" itemprop="name">
+      洗牌算法和抽样算法
     </h1>
   
 
-    </header>
-  </div>
-</article>
-  
+      </header>
     
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      <a href="/2015/07/22/Static变量问题/" class="archive-article-date">
-  <time datetime="2015-07-22T12:26:18.000Z" itemprop="datePublished">Jul 22</time>
-</a>
+    <div class="article-entry" itemprop="articleBody">
       
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2015/07/22/Static变量问题/">Static变量问题</a>
-    </h1>
-  
+        <p>这是两个关于随机性的题，但是两者有不一样的解题思路。</p>
+<p>洗牌算法：是给一定数量的牌，乱序后输出。<br>抽样算法：等概率的从n个数中随机抽去出m个。</p>
+<a id="more"></a>
+<p>洗牌算法</p>
+<p>首先将题目抽象，用数组array[n]来表示共有n张牌，然后修改其中牌的顺序输出。<br>洗牌算法实际上是一种全排列，因为某张牌所在位置的不同就会有两个不同的输出。<br>所以应该总共有n!种排列方式，数组中每一个元素出现在某一位上的概率应该为1/n。可以有这样的思路来进行解题。</p>
+<figure class="highlight delphi"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> i = <span class="number">1</span> <span class="keyword">to</span> n</span><br><span class="line">	swap (<span class="keyword">array</span>[i], <span class="keyword">array</span>[random(i, n)])</span><br><span class="line"><span class="keyword">end</span></span><br></pre></td></tr></table></figure>
+<p>对于数组array[n]中的第i位，选择从[i, n]中随机抽取的某位与之交换。详细说来，就是：<br>1、从数组中第[1,n]位中，随机选出一位放到第1位上。<br>2、从数组中第[2,n]位中，随机选出一位放到第2位上。<br>3、如上循环到第n位。</p>
+<p>证明：参考抽签方法，总共有3支签3个人来抽，第一个人抽完签后第二个人接着抽最后是第三个人。对于第二个人来说他抽的签的总数是从2支中抽取一支，但他抽到每支签的概率依然是1/3。<br>对于洗牌算法来说，虽然从第2位开始，每一次都是从n-i+1位中抽取1位来与第i位交换，但是总体来说每一位上选取到所有元素的概率都是1/n。</p>
+<p>抽样算法</p>
+<p>如果把抽样问题，如上方法来解，就会出错，因为抽样问题不是全排列问题，因为抽出数字的先后顺序不会改变这一次抽样的结果。</p>
+<p>未完待续，心情不好，写不下去了。-_-!!</p>
+<figure class="highlight delphi"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> i = m+<span class="number">1</span> <span class="keyword">to</span> n</span><br><span class="line">	tmp = random(<span class="number">1</span>, i)</span><br><span class="line">	<span class="keyword">if</span> (tmp &lt; m) </span><br><span class="line">		swap(<span class="keyword">array</span>[i], <span class="keyword">array</span>[random(<span class="number">1</span>, m)])</span><br><span class="line">	<span class="keyword">end</span></span><br><span class="line"><span class="keyword">end</span></span><br></pre></td></tr></table></figure>
 
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      <a href="/2015/07/19/TCP-IP一些问题记录/" class="archive-article-date">
-  <time datetime="2015-07-19T11:02:29.000Z" itemprop="datePublished">Jul 19</time>
-</a>
       
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2015/07/19/TCP-IP一些问题记录/">TCP/IP一些问题记录</a>
-    </h1>
-  
-
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      <a href="/2015/07/19/派生类的构造函数和虚析构函数/" class="archive-article-date">
-  <time datetime="2015-07-19T06:45:12.000Z" itemprop="datePublished">Jul 19</time>
-</a>
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://sjzlyl406.github.io/2015/08/19/洗牌算法和抽样算法/" data-id="cidigjotp00044m3fh3bdsg6l" class="article-share-link">Share</a>
       
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2015/07/19/派生类的构造函数和虚析构函数/">派生类的构造函数和虚析构函数</a>
-    </h1>
-  
-
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      <a href="/2015/07/06/Reading-Notes/" class="archive-article-date">
-  <time datetime="2015-07-06T06:31:38.000Z" itemprop="datePublished">Jul 6</time>
-</a>
       
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2015/07/06/Reading-Notes/">Reading Notes</a>
-    </h1>
-  
-
-    </header>
+    </footer>
   </div>
-</article>
   
     
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      <a href="/2015/07/01/automake-autoconf/" class="archive-article-date">
-  <time datetime="2015-07-01T14:10:33.000Z" itemprop="datePublished">Jul 1</time>
-</a>
-      
+<nav id="article-nav">
   
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2015/07/01/automake-autoconf/">Automake/Autoconf</a>
-    </h1>
   
+    <a href="/2015/08/19/多重继承中的虚继承/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">多重继承中的虚继承</div>
+    </a>
+  
+</nav>
 
-    </header>
-  </div>
+  
 </article>
-  
-  
-    </div></section>
-  
+
 </section>
       </div>
       <footer id="footer">
