@@ -11,7 +11,7 @@
 <meta property="og:url" content="http://sjzlyl406.github.io/2015/09/01/reading-text/index.html">
 <meta property="og:site_name" content="GentleWolf's blog">
 <meta property="og:description" content="读好的文章总会有很多收获，为什么感觉有很多收获，因为自己在这些方面很缺乏，多读些好文章，逐渐丰富自己，这个世界太精彩了，把全世界装进自己脑袋，让自己变得五彩缤纷。">
-<meta property="og:updated_time" content="2015-09-01T08:41:30.189Z">
+<meta property="og:updated_time" content="2015-09-01T09:34:06.129Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="reading text">
 <meta name="twitter:description" content="读好的文章总会有很多收获，为什么感觉有很多收获，因为自己在这些方面很缺乏，多读些好文章，逐渐丰富自己，这个世界太精彩了，把全世界装进自己脑袋，让自己变得五彩缤纷。">
@@ -205,11 +205,12 @@
 <p>1、以前学到锁的知识的时候，了解到这是对有限资源的保护方式，为了防止太多用户并发访问造成数据的不一致性。但是锁的使用会有一些副作用，比如产生开销，产生死锁。产生死锁会带来资源的浪费，一是被锁保护的资源不能释放，二是添加锁的用户不能跳出死锁循环。避免死锁的方式主要有两点，一是增加资源的数量，每个人都拥有资源，每个人都开开心心，也就不会有竞争，不用加锁防盗，二是顺序化推进每个用户对资源的访问顺序。这点一直知道有这么一种解决方法，但是不是很明确到底怎么顺序化推进。<br>今天阅读google三大论文中的GFS时，竟然读到了锁的方案，这里锁是为了限制树状文件树中某些叶子的并发访问，如对/home/user/leaf的访问，要加的锁有对/home/user的读锁，以及对/home/user/leaf的读写锁。锁在推进的时候保持这两点原则：</p>
 <pre><code>&gt;按照名称空间的层次排序，也就是从全局角度考虑锁的使用。
 &gt;同一层次中按字典顺序排序，也就是对同一层的锁的使用按照顺序使用。
-</code></pre>
+</code></pre><p>2、非常庆幸能读研，读研与读研之前对待某些事务的看法是不同的，这里想说的是考虑问题的方法，这个想法是从读文章中引出的，但是是我以前就有考虑过的。在文章中读到，在词频统计程序中，由于词频率倾向于一个zipf分布（齐夫分布），每个Map任务通过hash计算分成的小任务是不均匀的。如果是读研之前让我来完成这样一个任务我可能不会考虑词频分布的不均匀，这是完成任务的态度，但不是做科研（工程）的态度。<br>从做任务的态度到做科研的态度的转变是在导师的督促下一点一点完成，所以非常感谢导师的培养。做科研的的态度和做工程的态度在某些方面是一样的，要能优雅的完成任务，不要简单的机械的完成，简单机械完成的任务不能容易出错，而且容易浪费更多的时间来维护。完成简单机械的任务对自己也是没有收获的，简单的体力劳动而已，云风大哥说过自己的代码维护起来非常简单很少出错，原因就在于这是经过大脑思考后完成的，逻辑上是完整的所以不容易出错。</p>
+
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://sjzlyl406.github.io/2015/09/01/reading-text/" data-id="cie13vrwu0008ni3fqlzk2x22" class="article-share-link">Share</a>
+      <a data-url="http://sjzlyl406.github.io/2015/09/01/reading-text/" data-id="cie15rgnk0008vy3fe04ew796" class="article-share-link">Share</a>
       
       
     </footer>
