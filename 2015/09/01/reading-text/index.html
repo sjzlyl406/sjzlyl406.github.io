@@ -3,17 +3,18 @@
 <head>
   <meta charset="utf-8">
   
-  <title>Tag: singleton | GentleWolf&#39;s blog</title>
+  <title>reading text | GentleWolf&#39;s blog</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description">
-<meta property="og:type" content="website">
-<meta property="og:title" content="GentleWolf's blog">
-<meta property="og:url" content="http://sjzlyl406.github.io/tags/singleton/index.html">
+  <meta name="description" content="读好的文章总会有很多收获，为什么感觉有很多收获，因为自己在这些方面很缺乏，多读些好文章，逐渐丰富自己，这个世界太精彩了，把全世界装进自己脑袋，让自己变得五彩缤纷。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="reading text">
+<meta property="og:url" content="http://sjzlyl406.github.io/2015/09/01/reading-text/index.html">
 <meta property="og:site_name" content="GentleWolf's blog">
-<meta property="og:description">
+<meta property="og:description" content="读好的文章总会有很多收获，为什么感觉有很多收获，因为自己在这些方面很缺乏，多读些好文章，逐渐丰富自己，这个世界太精彩了，把全世界装进自己脑袋，让自己变得五彩缤纷。">
+<meta property="og:updated_time" content="2015-09-01T08:41:30.189Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="GentleWolf's blog">
-<meta name="twitter:description">
+<meta name="twitter:title" content="reading text">
+<meta name="twitter:description" content="读好的文章总会有很多收获，为什么感觉有很多收获，因为自己在这些方面很缺乏，多读些好文章，逐渐丰富自己，这个世界太精彩了，把全世界装进自己脑袋，让自己变得五彩缤纷。">
   
   
     <link rel="icon" href="/favicon.ico">
@@ -176,39 +177,58 @@
   
 </aside>
         
-        <section id="main">
-  
-  
-    
-    
-      
-      
-      <section class="archives-wrap">
-        <div class="archive-year-wrap">
-          <a href="/archives/2015" class="archive-year">2015</a>
-        </div>
-        <div class="archives">
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      <a href="/2015/06/23/The-Singleton-Pattern/" class="archive-article-date">
-  <time datetime="2015-06-23T12:41:31.000Z" itemprop="datePublished">Jun 23</time>
+        <section id="main"><article id="post-reading-text" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2015/09/01/reading-text/" class="article-date">
+  <time datetime="2015-09-01T08:24:12.000Z" itemprop="datePublished">2015-09-01</time>
 </a>
-      
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
   
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2015/06/23/The-Singleton-Pattern/">The Singleton Pattern</a>
+    <h1 class="article-title" itemprop="name">
+      reading text
     </h1>
   
 
-    </header>
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>读好的文章总会有很多收获，为什么感觉有很多收获，因为自己在这些方面很缺乏，多读些好文章，逐渐丰富自己，这个世界太精彩了，把全世界装进自己脑袋，让自己变得五彩缤纷。</p>
+<a id="more"></a>
+<p>这里会记录一些小的灵感，看书或文章的时候想到的。</p>
+<p>1、以前学到锁的知识的时候，了解到这是对有限资源的保护方式，为了防止太多用户并发访问造成数据的不一致性。但是锁的使用会有一些副作用，比如产生开销，产生死锁。产生死锁会带来资源的浪费，一是被锁保护的资源不能释放，二是添加锁的用户不能跳出死锁循环。避免死锁的方式主要有两点，一是增加资源的数量，每个人都拥有资源，每个人都开开心心，也就不会有竞争，不用加锁防盗，二是顺序化推进每个用户对资源的访问顺序。这点一直知道有这么一种解决方法，但是不是很明确到底怎么顺序化推进。<br>今天阅读google三大论文中的GFS时，竟然读到了锁的方案，这里锁是为了限制树状文件树中某些叶子的并发访问，如对/home/user/leaf的访问，要加的锁有对/home/user的读锁，以及对/home/user/leaf的读写锁。锁在推进的时候保持这两点原则：</p>
+<pre><code>&gt;按照名称空间的层次排序，也就是从全局角度考虑锁的使用。
+&gt;同一层次中按字典顺序排序，也就是对同一层的锁的使用按照顺序使用。
+</code></pre>
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://sjzlyl406.github.io/2015/09/01/reading-text/" data-id="cie13vrwu0008ni3fqlzk2x22" class="article-share-link">Share</a>
+      
+      
+    </footer>
   </div>
+  
+    
+<nav id="article-nav">
+  
+  
+    <a href="/2015/08/19/洗牌算法和抽样算法/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">洗牌算法和抽样算法</div>
+    </a>
+  
+</nav>
+
+  
 </article>
-  
-  
-    </div></section>
-  
+
 </section>
       </div>
       <footer id="footer">
