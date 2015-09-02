@@ -3,17 +3,18 @@
 <head>
   <meta charset="utf-8">
   
-  <title>Tag: Plan | GentleWolf&#39;s blog</title>
+  <title>epoll QA &amp; pitfalls | GentleWolf&#39;s blog</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description">
-<meta property="og:type" content="website">
-<meta property="og:title" content="GentleWolf's blog">
-<meta property="og:url" content="http://sjzlyl406.github.io/tags/Plan/index.html">
+  <meta name="description" content="使用epoll时的一些常见问题和应该避免的一些小错误。翻译自linux.die.net">
+<meta property="og:type" content="article">
+<meta property="og:title" content="epoll QA & pitfalls">
+<meta property="og:url" content="http://sjzlyl406.github.io/2015/09/02/epoll-QA-pitfalls/index.html">
 <meta property="og:site_name" content="GentleWolf's blog">
-<meta property="og:description">
+<meta property="og:description" content="使用epoll时的一些常见问题和应该避免的一些小错误。翻译自linux.die.net">
+<meta property="og:updated_time" content="2015-09-02T11:55:44.641Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="GentleWolf's blog">
-<meta name="twitter:description">
+<meta name="twitter:title" content="epoll QA & pitfalls">
+<meta name="twitter:description" content="使用epoll时的一些常见问题和应该避免的一些小错误。翻译自linux.die.net">
   
   
     <link rel="icon" href="/favicon.ico">
@@ -176,39 +177,68 @@
   
 </aside>
         
-        <section id="main">
-  
-  
-    
-    
-      
-      
-      <section class="archives-wrap">
-        <div class="archive-year-wrap">
-          <a href="/archives/2015" class="archive-year">2015</a>
-        </div>
-        <div class="archives">
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      <a href="/2015/06/06/Preparation-for-job-interview/" class="archive-article-date">
-  <time datetime="2015-06-06T08:44:41.000Z" itemprop="datePublished">Jun 6</time>
+        <section id="main"><article id="post-epoll-QA-pitfalls" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2015/09/02/epoll-QA-pitfalls/" class="article-date">
+  <time datetime="2015-09-02T11:13:29.000Z" itemprop="datePublished">2015-09-02</time>
 </a>
-      
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
   
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2015/06/06/Preparation-for-job-interview/">Preparation for job interview</a>
+    <h1 class="article-title" itemprop="name">
+      epoll QA &amp; pitfalls
     </h1>
   
 
-    </header>
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>使用epoll时的一些常见问题和应该避免的一些小错误。<br>翻译自<a href="linux.die.net/man/4/epoll">linux.die.net</a></p>
+<a id="more"></a>
+<p><strong>QUESTIONS AND ANSWERS</strong></p>
+<p>Q1：向epoll_set添加两次fd会发生什么情况？<br>A1：可能会得到错误码EEXIST.但是可以在两条线程中添加相同的fd，这种做法无害。</p>
+<p>Q2：两个epoll能等同一个fd吗？如果可以，是不是两个epoll同时收到通知？<br>A2：是的，但是，这种做法不提倡。</p>
+<p>Q3：epoll这个文件的fd可不可以加入到poll/epoll/select中？<br>A3：是的</p>
+<p>Q4：将epoll的fd加入到自己的fd集合中会发生什么现象？<br>A4：失败，但是epoll的fd可以添加到其他epoll的fd集合中。</p>
+<p>Q5：epoll的fd能通过socket发送给其他程序处理？<br>A5：不能</p>
+<p>Q6：关闭一个文件能不能使这个文件自动从epoll文件集合中删除？<br>A6：能</p>
+<p>Q7：对fd的操作会不会影响已经被epoll监测到但还没有通知的事件？<br>A7：分情况讨论，对fd的删除会使这个事件没有意义，修改会重新检测可用IO。</p>
+<p>Q8：如果多于1个事件同时到达epoll，他们会一个一个报告还是一起报告？<br>A8：一起</p>
+<p>Q9：在ET模式下，我是不是需要连续read/write直到收到EAGAIN错误？<br>A9：不必这样，从epoll_wait收到的事件通知是告诉你之前添加的I/O请求准备好了。你可以这样认为，直到你收到下一个EAGAIN之前，他都是准备好的。你什么时候处理或怎样处理这个fd都取决于你自己。同样，read/write的IO缓存区空间是不是用完可以通过检查从fd中read/write的数据量来察觉。例如，你从一个fd中read一个确定数量的数据，结果返回一个少量的数据，那么你就可以确定这个I/O缓存区空间已经用完了。同样的情况适用于write函数。</p>
+<p><strong>Pitfalla and ways to avoid them</strong></p>
+<p>饥饿（ET边缘触发）</p>
+<p>假如有较大的I/O缓存区空间，那么很有可能会长时间处理它，使其他文件得不到处理从而引起饥饿。这对于epoll是不(specific)。</p>
+<p>解决办法是保存一个已准备链表，并且在fd的有关数据结构中标记这个fd是准备好的。因此使程序能记住那些是将要被处理的。这同样支持忽略后面接收到的关于这个fd已经准备好的一连串的事件。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://sjzlyl406.github.io/2015/09/02/epoll-QA-pitfalls/" data-id="cie2q9g2x000qok3fmtieyt84" class="article-share-link">Share</a>
+      
+      
+    </footer>
   </div>
+  
+    
+<nav id="article-nav">
+  
+  
+    <a href="/2015/09/01/reading-text/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">reading text</div>
+    </a>
+  
+</nav>
+
+  
 </article>
-  
-  
-    </div></section>
-  
+
 </section>
       </div>
       <footer id="footer">
