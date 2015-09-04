@@ -85,7 +85,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Archives</h3>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/09/">September 2015</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/08/">August 2015</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/07/">July 2015</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/06/">June 2015</a><span class="archive-list-count">7</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/05/">May 2015</a><span class="archive-list-count">1</span></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/09/">September 2015</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/08/">August 2015</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/07/">July 2015</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/06/">June 2015</a><span class="archive-list-count">7</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/05/">May 2015</a><span class="archive-list-count">1</span></li></ul>
     </div>
   </div>
 
@@ -95,6 +95,10 @@
     <h3 class="widget-title">Recents</h3>
     <div class="widget">
       <ul>
+        
+          <li>
+            <a href="/2015/09/04/并发网络IO处理的理解/">并发网络IO处理的理解</a>
+          </li>
         
           <li>
             <a href="/2015/09/02/epoll-QA-pitfalls/">epoll QA &amp; pitfalls</a>
@@ -110,10 +114,6 @@
         
           <li>
             <a href="/2015/08/19/多重继承中的虚继承/">多重继承中的虚继承</a>
-          </li>
-        
-          <li>
-            <a href="/2015/08/13/Static函数进行初始化/">Static函数进行初始化</a>
           </li>
         
       </ul>
@@ -178,6 +178,47 @@
         
         <section id="main">
   
+    <article id="post-并发网络IO处理的理解" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2015/09/04/并发网络IO处理的理解/" class="article-date">
+  <time datetime="2015-09-04T01:50:32.000Z" itemprop="datePublished">2015-09-04</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2015/09/04/并发网络IO处理的理解/">并发网络IO处理的理解</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>linux下，多用户并发访问时，网络服务器端可以有几种响应方式：PPC(process per connection)、TPC(thread per connection)、select、poll、epoll。由于并发访问时用户数量的多少以及连接时长不同，这几种方式适用场景也不同。</p>
+        
+          <p class="article-more-link">
+            <a href="/2015/09/04/并发网络IO处理的理解/#more">Read More</a>
+          </p>
+        
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://sjzlyl406.github.io/2015/09/04/并发网络IO处理的理解/" data-id="cie524isl0005n43few43xeev" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
     <article id="post-epoll-QA-pitfalls" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
     <a href="/2015/09/02/epoll-QA-pitfalls/" class="article-date">
@@ -209,7 +250,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://sjzlyl406.github.io/2015/09/02/epoll-QA-pitfalls/" data-id="cie2q9g2x000qok3fmtieyt84" class="article-share-link">Share</a>
+      <a data-url="http://sjzlyl406.github.io/2015/09/02/epoll-QA-pitfalls/" data-id="cie524iu6000rn43fx3cnhvw7" class="article-share-link">Share</a>
       
       
     </footer>
@@ -250,7 +291,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://sjzlyl406.github.io/2015/09/01/reading-text/" data-id="cie2q9g1o0008ok3f3swzfq9f" class="article-share-link">Share</a>
+      <a data-url="http://sjzlyl406.github.io/2015/09/01/reading-text/" data-id="cie524it30009n43fz451mnyf" class="article-share-link">Share</a>
       
       
     </footer>
@@ -292,7 +333,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://sjzlyl406.github.io/2015/08/19/洗牌算法和抽样算法/" data-id="cie2q9g150003ok3f6scfdg3l" class="article-share-link">Share</a>
+      <a data-url="http://sjzlyl406.github.io/2015/08/19/洗牌算法和抽样算法/" data-id="cie524ise0003n43f5yubcfsc" class="article-share-link">Share</a>
       
       
     </footer>
@@ -333,7 +374,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://sjzlyl406.github.io/2015/08/19/多重继承中的虚继承/" data-id="cie2q9g1e0006ok3f1cr8eq66" class="article-share-link">Share</a>
+      <a data-url="http://sjzlyl406.github.io/2015/08/19/多重继承中的虚继承/" data-id="cie524iss0007n43f3dsuf104" class="article-share-link">Share</a>
       
       
     </footer>
@@ -374,7 +415,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://sjzlyl406.github.io/2015/08/13/Static函数进行初始化/" data-id="cie2q9g3y0018ok3f4zb27eg5" class="article-share-link">Share</a>
+      <a data-url="http://sjzlyl406.github.io/2015/08/13/Static函数进行初始化/" data-id="cie524iv00019n43fbpgb5njg" class="article-share-link">Share</a>
       
       
     </footer>
@@ -415,7 +456,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://sjzlyl406.github.io/2015/08/09/大规模并发请求服务器架构解决方案/" data-id="cie2q9g1c0005ok3fw781dz9n" class="article-share-link">Share</a>
+      <a data-url="http://sjzlyl406.github.io/2015/08/09/大规模并发请求服务器架构解决方案/" data-id="cie524iso0006n43ffww0i8wj" class="article-share-link">Share</a>
       
       
     </footer>
@@ -457,7 +498,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://sjzlyl406.github.io/2015/08/05/TCP网络控制/" data-id="cie2q9g3j0015ok3f62qbtoa5" class="article-share-link">Share</a>
+      <a data-url="http://sjzlyl406.github.io/2015/08/05/TCP网络控制/" data-id="cie524iuo0016n43foxu637m9" class="article-share-link">Share</a>
       
       
     </footer>
@@ -498,7 +539,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://sjzlyl406.github.io/2015/07/31/数据库的一致性/" data-id="cie2q9g190004ok3fdqmi1o2i" class="article-share-link">Share</a>
+      <a data-url="http://sjzlyl406.github.io/2015/07/31/数据库的一致性/" data-id="cie524ish0004n43fgdbg1p3i" class="article-share-link">Share</a>
       
       
     </footer>
@@ -540,48 +581,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://sjzlyl406.github.io/2015/07/22/Static变量问题/" data-id="cie2q9g3t0017ok3fdwh4e5yj" class="article-share-link">Share</a>
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-TCP-IP一些问题记录" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2015/07/19/TCP-IP一些问题记录/" class="article-date">
-  <time datetime="2015-07-19T11:02:29.000Z" itemprop="datePublished">2015-07-19</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2015/07/19/TCP-IP一些问题记录/">TCP/IP一些问题记录</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>记录一些讲解比较清楚明白的关于TCP/IP的博客网站地址。</p>
-        
-          <p class="article-more-link">
-            <a href="/2015/07/19/TCP-IP一些问题记录/#more">Read More</a>
-          </p>
-        
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://sjzlyl406.github.io/2015/07/19/TCP-IP一些问题记录/" data-id="cie2q9g3o0016ok3f40kwplhf" class="article-share-link">Share</a>
+      <a data-url="http://sjzlyl406.github.io/2015/07/22/Static变量问题/" data-id="cie524iuw0018n43f57acibpa" class="article-share-link">Share</a>
       
       
     </footer>
