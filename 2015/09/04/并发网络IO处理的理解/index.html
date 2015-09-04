@@ -11,7 +11,7 @@
 <meta property="og:url" content="http://sjzlyl406.github.io/2015/09/04/并发网络IO处理的理解/index.html">
 <meta property="og:site_name" content="GentleWolf's blog">
 <meta property="og:description" content="linux下，多用户并发访问时，网络服务器端可以有几种响应方式：PPC(process per connection)、TPC(thread per connection)、select、poll、epoll。由于并发访问时用户数量的多少以及连接时长不同，这几种方式适用场景也不同。">
-<meta property="og:updated_time" content="2015-09-04T03:03:23.158Z">
+<meta property="og:updated_time" content="2015-09-04T07:05:10.462Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="并发网络IO处理的理解">
 <meta name="twitter:description" content="linux下，多用户并发访问时，网络服务器端可以有几种响应方式：PPC(process per connection)、TPC(thread per connection)、select、poll、epoll。由于并发访问时用户数量的多少以及连接时长不同，这几种方式适用场景也不同。">
@@ -203,14 +203,14 @@
 <a id="more"></a>
 <p>PPC(Process Per Connection)的一个典型的应用是Apache模型，这种模型的是服务器端接受一个请求就开辟一个新的进程来响应这个请求。TPC(Thread Per Connection)和PPC类似，当服务器接收一个新的请求时开辟一个新的线程来响应这个请求。<strong>这两种模型适用于并发数不大的情形</strong>。<br>其中TPC模式适用于处理短连接情形。在linux下，每一条线程都要消耗约8M的栈空间，当连接时间为长连接时，一段时间内就会有大量的并发连接，假设并发连接数为1000，则内存消耗会达到1000*8M=8GB的空间。这对于一个进程的内存地址空间来说是不能满足的。在这种情况下，是不能避免DDoS攻击的，因为任何一个连接不管是idle connection、deal connection还是active connection都会都内存空间消耗，这时候发动大量无意义的连接，就能轻易搞垮一个服务器。<br>PPC方式适用于并发长连接，但不适用于连接频繁产生和关闭的情形。PPC方式的使用同样会带来很大内存的开销，因为OS内存管理的copy on write机制，使fork产生的子进程与父进程能共享一大部分的物理内存。但是多进程模型在执行效率上同样很低。多进程方式还会带来进程间通信的复杂问题，以及对DDos攻击的防护能力太弱。</p>
 <p>select、poll可以适用的并发连接数比PPC和TPC多，select好像一个小工，来监视一组的文件句柄集，如果有活动的文件，就通知进程/线程来处理。但是select有两个问题，一是能查询的最大文件句柄数是有限制的，二是当提醒有活动句柄时，并不能告诉具体是那些有活动，所以需要遍历整个文件句柄集。poll和select类似，只是能查询的最大文件句柄数没了限制。poll是在select使用了14年后才出现的。可见当时的并发请求真的很少，说明科技在进步，技术在发展。<br>这两种情况都是使用与idle connection和dead connection数目比较少的情况，因为大量的idle connection和dead connection会带来轮询的开销，使服务器端处理效率下降。当idle connection数量比较多的时候，要选择epoll方式。</p>
-<p>epoll的连接数不受限制，且使用红黑树来保存文件句柄，在大并发访问时不会带来性能的下降，epoll方式下有两种触发方式，ET模式要求选择非阻塞socket，但是在LT模式下socket也要选择非阻塞性，这时候读文件或写操作要在读或写到EAGAIN(EWOULDBLOCK)时或请求读或写的长度大与实际返回的长度时停止。epoll下编程要求逻辑清晰，较大的IO读写操作造成饥饿问题。<br>这种模型效率是极高的。nginx服务器就是采用这种模型，可以轻松应对上千万的空连接+少量活动链接，每个连接仅需要几K的内核缓冲区，想要应对更多的空连接，只需简单的增加内存(数据来源为淘宝一位工程师的一次技术讲座，并未实测)。这使得DDoS攻击者的成本大大增加，这种模型攻击者只能将服务器的带宽全部占用，才能达到目的，而两方的投入是不成比例的。</p>
+<p>epoll的连接数不受限制，且使用红黑树来保存文件句柄，在大并发访问时不会带来性能的下降，epoll方式下有两种触发方式，ET模式要求选择非阻塞socket，但是在LT模式下建议socket也要选择非阻塞性，这时候读文件或写操作要在读或写到EAGAIN(EWOULDBLOCK)时或请求读或写的长度大与实际返回的长度时停止。epoll下编程要求逻辑清晰，较大的IO读写操作造成饥饿问题。<br>这种模型效率是极高的。nginx服务器就是采用这种模型，可以轻松应对上千万的空连接+少量活动链接，每个连接仅需要几K的内核缓冲区，想要应对更多的空连接，只需简单的增加内存(数据来源为淘宝一位工程师的一次技术讲座，并未实测)。这使得DDoS攻击者的成本大大增加，这种模型攻击者只能将服务器的带宽全部占用，才能达到目的，而两方的投入是不成比例的。</p>
 <p>epoll+thread pool模式，可以保证大并发，不用担心饥饿问题。在一个连接要进行长时间处理时，单纯的epoll方式可能会带来饥饿问题，造成随后连接的丢失。这时采用epoll+thread poll方式，epoll在这里只负责接收连接，保证并发但不负责不处理。接收到的并发连接，放到连接队列里，然后将连接使用新的线程来处理，为了提高线程的利用率，开辟一个线程池来管理这些线程。<br>这种方式既可以保证并发，又能使复杂业务处理上的负担被分担。</p>
 <p>参考：<br><a href="http://blog.csdn.net/fanbird2008/article/details/16941217" target="_blank" rel="external">Linux下select, poll和epoll IO模型的详解</a><br><a href="">man 7 epoll</a><br><a href="http://www.zhihu.com/question/20114168" target="_blank" rel="external">Linux开发，使用多线程还是IO复用select/epoll</a></p>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://sjzlyl406.github.io/2015/09/04/并发网络IO处理的理解/" data-id="cie524isl0005n43few43xeev" class="article-share-link">Share</a>
+      <a data-url="http://sjzlyl406.github.io/2015/09/04/并发网络IO处理的理解/" data-id="cie5arhrb00057u3flvnjkddy" class="article-share-link">Share</a>
       
       
     </footer>
