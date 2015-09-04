@@ -11,7 +11,7 @@
 <meta property="og:url" content="http://sjzlyl406.github.io/2015/09/02/epoll-QA-pitfalls/index.html">
 <meta property="og:site_name" content="GentleWolf's blog">
 <meta property="og:description" content="使用epoll时的一些常见问题和应该避免的一些小错误。翻译自linux.die.net">
-<meta property="og:updated_time" content="2015-09-02T11:55:44.641Z">
+<meta property="og:updated_time" content="2015-09-04T08:02:50.714Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="epoll QA & pitfalls">
 <meta name="twitter:description" content="使用epoll时的一些常见问题和应该避免的一些小错误。翻译自linux.die.net">
@@ -213,13 +213,13 @@
 <p>Q9：在ET模式下，我是不是需要连续read/write直到收到EAGAIN错误？<br>A9：不必这样，从epoll_wait收到的事件通知是告诉你之前添加的I/O请求准备好了。你可以这样认为，直到你收到下一个EAGAIN之前，他都是准备好的。你什么时候处理或怎样处理这个fd都取决于你自己。同样，read/write的IO缓存区空间是不是用完可以通过检查从fd中read/write的数据量来察觉。例如，你从一个fd中read一个确定数量的数据，结果返回一个少量的数据，那么你就可以确定这个I/O缓存区空间已经用完了。同样的情况适用于write函数。</p>
 <p><strong>Pitfalla and ways to avoid them</strong></p>
 <p>饥饿（ET边缘触发）</p>
-<p>假如有较大的I/O缓存区空间，那么很有可能会长时间处理它，使其他文件得不到处理从而引起饥饿。这对于epoll是不(specific)。</p>
+<p>假如I/O空间很大的时候，那么很有可能会长时间处理它，使其他文件得不到处理从而引起饥饿。这对于epoll是不(specific)。</p>
 <p>解决办法是保存一个已准备链表，并且在fd的有关数据结构中标记这个fd是准备好的。因此使程序能记住那些是将要被处理的。这同样支持忽略后面接收到的关于这个fd已经准备好的一连串的事件。</p>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://sjzlyl406.github.io/2015/09/02/epoll-QA-pitfalls/" data-id="cie5arht2000r7u3fga3sz5bq" class="article-share-link">Share</a>
+      <a data-url="http://sjzlyl406.github.io/2015/09/02/epoll-QA-pitfalls/" data-id="cie5ctnrz000rok3f3vy46z6e" class="article-share-link">Share</a>
       
       
     </footer>
