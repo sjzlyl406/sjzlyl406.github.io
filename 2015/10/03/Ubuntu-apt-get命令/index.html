@@ -3,18 +3,18 @@
 <head>
   <meta charset="utf-8">
   
-  <title>大规模并发请求服务器架构解决方案 | GentleWolf&#39;s blog</title>
+  <title>转_Ubuntu_apt-get命令 | GentleWolf&#39;s blog</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="大规模并发请求服务器架构解决方案，主要介绍了一些知名网站的服务器架构方法。">
+  <meta name="description" content="apt-get近乎是最常用的shell命令之一了，因为他是Ubuntu通过新立得安装软件的常用工具命令。">
 <meta property="og:type" content="article">
-<meta property="og:title" content="大规模并发请求服务器架构解决方案">
-<meta property="og:url" content="http://sjzlyl406.github.io/2015/08/09/大规模并发请求服务器架构解决方案/index.html">
+<meta property="og:title" content="转_Ubuntu_apt-get命令">
+<meta property="og:url" content="http://sjzlyl406.github.io/2015/10/03/Ubuntu-apt-get命令/index.html">
 <meta property="og:site_name" content="GentleWolf's blog">
-<meta property="og:description" content="大规模并发请求服务器架构解决方案，主要介绍了一些知名网站的服务器架构方法。">
-<meta property="og:updated_time" content="2015-09-02T10:35:19.629Z">
+<meta property="og:description" content="apt-get近乎是最常用的shell命令之一了，因为他是Ubuntu通过新立得安装软件的常用工具命令。">
+<meta property="og:updated_time" content="2015-10-03T02:13:03.362Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="大规模并发请求服务器架构解决方案">
-<meta name="twitter:description" content="大规模并发请求服务器架构解决方案，主要介绍了一些知名网站的服务器架构方法。">
+<meta name="twitter:title" content="转_Ubuntu_apt-get命令">
+<meta name="twitter:description" content="apt-get近乎是最常用的shell命令之一了，因为他是Ubuntu通过新立得安装软件的常用工具命令。">
   
   
     <link rel="icon" href="/favicon.ico">
@@ -177,12 +177,16 @@
   
 </aside>
         
-        <section id="main"><article id="post-大规模并发请求服务器架构解决方案" class="article article-type-post" itemscope itemprop="blogPost">
+        <section id="main"><article id="post-Ubuntu-apt-get命令" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
-    <a href="/2015/08/09/大规模并发请求服务器架构解决方案/" class="article-date">
-  <time datetime="2015-08-09T13:48:32.000Z" itemprop="datePublished">2015-08-09</time>
+    <a href="/2015/10/03/Ubuntu-apt-get命令/" class="article-date">
+  <time datetime="2015-10-03T02:02:03.000Z" itemprop="datePublished">2015-10-03</time>
 </a>
     
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/linux/">linux</a>
+  </div>
+
   </div>
   <div class="article-inner">
     
@@ -191,7 +195,7 @@
         
   
     <h1 class="article-title" itemprop="name">
-      大规模并发请求服务器架构解决方案
+      转_Ubuntu_apt-get命令
     </h1>
   
 
@@ -199,47 +203,44 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p>大规模并发请求服务器架构解决方案，<br>主要介绍了一些知名网站的服务器架构方法。</p>
+        <p>apt-get近乎是最常用的shell命令之一了，因为他是Ubuntu通过新立得安装软件的常用工具命令。</p>
 <a id="more"></a>
-<iframe width="738" height="523" class="preview-iframe" scrolling="no" frameborder="0" src="http://download.csdn.net/source/preview/2891781/292e546376d9ea75f362e8a7f4997d9e"></iframe>
-
-<p>阅读记录：</p>
-<p><strong>浏览量大的网站应该从那方面入手？（P17）</strong><br>1、优化数据库访问。<br>    前台尽量静态化，可以完全不用数据库最好，但是一半大型网站，静态化往往不能满足某些功能。这时可以采用缓存技术，将动态数据存储到缓存文件中，动态网页直接调用这些文件，而不必访问数据库。<br>    如果确实无法避免数据库访问，可以尝试优化数据库查询SQL。避免Select*from这样的语句。<br>2、禁止外部的盗链<br>    外部网站的图片或文件盗链往往带来大量负载压力。<br>3、控制大文件下载<br>    可以将大文件单独放在一台服务器上。<br>4、使用不同主机分流主要流量</p>
-<p><strong>负载均衡技术建设高负载站点（P20）</strong><br>1、按内容将服务器用于不同方面，比如一台提供新闻页面，一台提供游戏页面；按功能进行分割，比如一台用于提供静态页面访问，一台用于CGI()等需要大量资源消耗的动态页面。<br>    然而由于网络访问的突发性，很难确定那些页面造成的负载过大。事实上造成负载过大的页面常常是在变化中的，所以要采取负载均衡动态调整服务器访问。<br>2、基于特定服务器软件的负载均衡<br>    利用HTTP协议中的Location指令，接受到这个指令的浏览器将自动重定向到Location指明的另一个URL上。可以根据这个特性来设计一个负载均衡的服务器，任何时候Web服务器认为自己负载过大的时候，它就不再直接发送回浏览器请求的网页，而是发送一个Location指令，让浏览器去服务器集群中的其他服务器上获得所需要的网页。</p>
-<p><strong>大规模数据查询提高查询速度</strong><br>1、在主键或尽量少重复的字段上建立索引，通过索引来查询数据库。<br>2、避免使用迫使引擎放弃索引而进行全表扫描的语句</p>
-<pre><code>* 应尽量避免<span class="keyword">where</span>中使用!=或&lt;&gt;操作符
-* 尽量避免在<span class="keyword">where</span>字句中对字段进行null值判断
-* 尽量避免在<span class="keyword">where</span>子句中使用<span class="keyword">or</span>来连接条件
-* 慎用<span class="keyword">in</span>和<span class="keyword">not</span> <span class="keyword">in</span>语句：select <span class="property">id</span> <span class="keyword">from</span> t <span class="keyword">where</span> num <span class="keyword">in</span> (<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>)
-* 避免在<span class="keyword">where</span>子句中对字段进行表达式操作
-</code></pre><p>3、用exists代替in来进行查询<br>4、尽量使用数字型字段，因为数字型字段相比字符型字段在比较方面有优势。<br>5、不使用select *。<br>6、尽量避免大事务操作，提高并发能力。</p>
-<p><strong>查询速度慢的原因</strong><br>1、没有索引或者没有用到索引(这是查询慢最常见的问题,是程序设计的缺陷)<br>2、I/O吞吐量小,形成了瓶颈效应。<br>3、没有创建计算列导致查询不优化。<br>4、内存不足<br>5、网络速度慢 6、查询出的数据量过大(可以采用多次查询,其他的方法降低数据量)<br>6、锁或者死锁(这也是查询慢最常见的问题,是程序设计的缺陷)<br>7、sp_lock,sp_who,活动的用户查看,原因是读写竞争资源。<br>8、返回了不必要的行和列<br>9、查询语句不好,没有优化 </p>
+<p>本文列举了常用的APT命令参数：</p>
+<p>apt-cache search package 搜索软件包</p>
+<p>apt-cache show package  获取包的相关信息，如说明、大小、版本等</p>
+<p>sudo apt-get install package 安装包</p>
+<p>sudo apt-get install package —reinstall   重新安装包</p>
+<p>sudo apt-get -f install   修复安装</p>
+<p>sudo apt-get remove package 删除包</p>
+<p>sudo apt-get remove package —purge 删除包，包括配置文件等</p>
+<p>sudo apt-get update  更新源</p>
+<p>sudo apt-get upgrade 更新已安装的包</p>
+<p>sudo apt-get dist-upgrade 升级系统</p>
+<p>apt-cache depends package 了解使用该包依赖那些包</p>
+<p>apt-cache rdepends package 查看该包被哪些包依赖</p>
+<p>sudo apt-get build-dep package 安装相关的编译环境</p>
+<p>apt-get source package  下载该包的源代码</p>
+<p>sudo apt-get clean &amp;&amp; sudo apt-get autoclean 清理无用的包</p>
+<p>sudo apt-get check 检查是否有损坏的依赖</p>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://sjzlyl406.github.io/2015/08/09/大规模并发请求服务器架构解决方案/" data-id="cifafsogc0006pi3f85c4xvpz" class="article-share-link">Share</a>
+      <a data-url="http://sjzlyl406.github.io/2015/10/03/Ubuntu-apt-get命令/" data-id="cifag3i2n0000v93f03a00w7l" class="article-share-link">Share</a>
       
       
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Ubuntu/">Ubuntu</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/linux/">linux</a></li></ul>
+
     </footer>
   </div>
   
     
 <nav id="article-nav">
   
-    <a href="/2015/08/13/Static函数进行初始化/" id="article-nav-newer" class="article-nav-link-wrap">
-      <strong class="article-nav-caption">Newer</strong>
-      <div class="article-nav-title">
-        
-          Static函数进行初始化
-        
-      </div>
-    </a>
   
-  
-    <a href="/2015/08/05/TCP网络控制/" id="article-nav-older" class="article-nav-link-wrap">
+    <a href="/2015/09/28/9月份求职总结/" id="article-nav-older" class="article-nav-link-wrap">
       <strong class="article-nav-caption">Older</strong>
-      <div class="article-nav-title">TCP网络控制</div>
+      <div class="article-nav-title">9月份求职总结</div>
     </a>
   
 </nav>
